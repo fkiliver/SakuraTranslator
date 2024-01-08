@@ -13,3 +13,5 @@
 启动游戏后，使用快捷键alt+0打开翻译面板，选择SakuraTranslator  
 
 ![image](https://github.com/fkiliver/SakuraTranslator/assets/48873439/17c2c144-dab7-4b23-958f-a0dd8ddd11d4)
+
+![image](https://github.com/fkiliver/SakuraTranslator/assets/48873439/ffba161d-8d0c-4a0e-bd15-71ab95db30ef)
