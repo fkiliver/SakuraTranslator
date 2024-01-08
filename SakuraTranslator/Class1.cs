@@ -20,14 +20,14 @@ namespace SakuraTranslator
 
         public void Initialize(IInitializationContext context)
         {
-            // 初始化代码（如果有的话）
+ 
         }
 
         public IEnumerator Translate(ITranslationContext context)
         {
             var untranslatedText = context.UntranslatedText;
 
-            // 检查文本中是否有换行符并分割
+            // 以换行符分割文本
             string[] lines = untranslatedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             StringBuilder translatedTextBuilder = new StringBuilder();
 
@@ -35,7 +35,7 @@ namespace SakuraTranslator
             {
                 if (!string.IsNullOrEmpty(line))
                 {
-                    // 对每一行进行翻译
+                    // 逐行翻译
                     IEnumerator translateLineCoroutine = TranslateLine(line, translatedTextBuilder);
                     while (translateLineCoroutine.MoveNext())
                     {
