@@ -27,11 +27,36 @@ namespace SakuraTranslator
         {
             var untranslatedText = context.UntranslatedText;
 
-            // 使用自定义方法转义文本
-            var escapedUntranslatedText = EscapeJsonString(untranslatedText);
+            // 检查文本中是否有换行符并分割
+            string[] lines = untranslatedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            StringBuilder translatedTextBuilder = new StringBuilder();
 
+            foreach (var line in lines)
+            {
+                if (!string.IsNullOrEmpty(line))
+                {
+                    // 对每一行进行翻译
+                    IEnumerator translateLineCoroutine = TranslateLine(line, translatedTextBuilder);
+                    while (translateLineCoroutine.MoveNext())
+                    {
+                        yield return null;
+                    }
+                }
+                else
+                {
+                    // 保留空行
+                    translatedTextBuilder.AppendLine();
+                }
+            }
+
+            string translatedText = translatedTextBuilder.ToString().TrimEnd('\r', '\n');
+            context.Complete(translatedText);
+        }
+
+        private IEnumerator TranslateLine(string line, StringBuilder translatedTextBuilder)
+        {
             // 构建请求JSON
-            var json = $"{{\"frequency_penalty\": 0, \"n_predict\": 1000, \"prompt\": \"<reserved_106>将下面的日文文本翻译成中文：{escapedUntranslatedText}<reserved_107>\", \"repeat_penalty\": 1, \"temperature\": 0.1, \"top_k\": 40, \"top_p\": 0.3}}";
+            var json = $"{{\"frequency_penalty\": 0, \"n_predict\": 1000, \"prompt\": \"<reserved_106>将下面的日文文本翻译成中文：{line}<reserved_107>\", \"repeat_penalty\": 1, \"temperature\": 0.1, \"top_k\": 40, \"top_p\": 0.3}}";
             var dataBytes = Encoding.UTF8.GetBytes(json);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:8080/completion");
@@ -46,6 +71,7 @@ namespace SakuraTranslator
 
             var asyncResult = request.BeginGetResponse(null, null);
 
+            // 等待异步操作完成
             while (!asyncResult.IsCompleted)
             {
                 yield return null;
@@ -66,38 +92,10 @@ namespace SakuraTranslator
             // 手动解析JSON响应
             var startIndex = responseText.IndexOf("\"content\":") + 10;
             var endIndex = responseText.IndexOf(",", startIndex);
-            var translatedText = responseText.Substring(startIndex, endIndex - startIndex).Trim('\"', ' ', '\r', '\n');
+            var translatedLine = responseText.Substring(startIndex, endIndex - startIndex).Trim('\"', ' ', '\r', '\n');
 
-            context.Complete(translatedText);
-        }
-
-        private string EscapeJsonString(string value)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (char c in value)
-            {
-                switch (c)
-                {
-                    case '\"': sb.Append("\\\""); break;
-                    case '\\': sb.Append("\\\\"); break;
-                    case '\b': sb.Append("\\b"); break;
-                    case '\f': sb.Append("\\f"); break;
-                    case '\n': sb.Append("\\n"); break;
-                    case '\r': sb.Append("\\r"); break;
-                    case '\t': sb.Append("\\t"); break;
-                    default:
-                        if (c < ' ')
-                        {
-                            sb.AppendFormat("\\u{0:X4}", (int)c);
-                        }
-                        else
-                        {
-                            sb.Append(c);
-                        }
-                        break;
-                }
-            }
-            return sb.ToString();
+            // 将翻译后的行添加到StringBuilder
+            translatedTextBuilder.AppendLine(translatedLine);
         }
     }
 }
