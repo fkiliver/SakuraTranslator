@@ -7,6 +7,12 @@
 # 流程
 确保Sakura服务器成功启动并监听http://127.0.0.1:8080  
 
+![image](https://github.com/fkiliver/SakuraTranslator/assets/48873439/a69e74a6-f789-4de2-9ce5-d73209f2843c)
+
+使用MTool启动游戏并导出待翻译的原文  
+
+![image](https://github.com/fkiliver/SakuraTranslator/assets/48873439/bc00335f-751e-4252-98bc-8b807640c400)
+
 复制项目内的main.py文件放置在Mtool导出的ManualTransFile.json同级目录下  
 
 运行main.py
@@ -19,4 +25,4 @@ python main.py
 
 每翻译100行会保存当前翻译进度，下次启动翻译器时会从中断位置继续翻译
 
-翻译完成后通过Mtool重新导入ManualTransFile.json即可完成翻译  
+翻译完成后通过Mtool加载翻译文件ManualTransFile.json即可完成翻译  
