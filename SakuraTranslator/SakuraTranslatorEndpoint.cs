@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
-using System.Collections.Generic;
 
 namespace SakuraTranslator
 {
