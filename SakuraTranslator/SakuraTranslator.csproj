@@ -41,12 +41,21 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="XUnity.AutoTranslator.Plugin.Core">
-      <HintPath>Developer\XUnity.AutoTranslator.Plugin.Core.dll</HintPath>
+    <Reference Include="XUnity.AutoTranslator.Plugin.Core, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XUnity.AutoTranslator.Plugin.Core.4.7.0\lib\net35\XUnity.AutoTranslator.Plugin.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.AutoTranslator.Plugin.ExtProtocol, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XUnity.AutoTranslator.Plugin.ExtProtocol.1.0.0\lib\net35\XUnity.AutoTranslator.Plugin.ExtProtocol.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XUnity.Common.1.0.0\lib\net35\XUnity.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.ResourceRedirector, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XUnity.ResourceRedirector.1.1.0\lib\net35\XUnity.ResourceRedirector.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="SakuraTranslatorEndpoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
