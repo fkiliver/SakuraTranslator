@@ -2,22 +2,24 @@ name: .NET 3.5 CI
 
 on:
   push:
-    branches: 
-      - master
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET 3.5
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '3.5'
-    # - name: Build with MSBuild
-    #   run: msbuild /p:Configuration=Release
-    #测试
-    - name: Test with MSBuild
-      run: msbuild /p:Configuration=Release /p:TargetFrameworkVersion=v3.5 /t:Test
+
+    - name: Enable .NET Framework 3.5
+      run: |
+        dism /online /enable-feature /featurename:NetFX3 /All
+
+    - name: Set up MSBuild path
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Build with MSBuild
+      run: msbuild /p:Configuration=Release
