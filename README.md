@@ -10,13 +10,13 @@
 
 从[Releases](https://github.com/fkiliver/SakuraTranslator/releases) 下载SakuraTranslator.dll放置在Translators文件夹内
 
-修改AutoTranslatorConfig.ini中
-[General]
-Language=zh
-FromLanguage=ja
-[Sakura]
-Endpoint=http://127.0.0.1:8080/completion ##这里修改为你的模型server监听的地址
-ApiType=Qwen ##Qwen为Sakura 0.9模型,空置则为Sakura 0.8
+修改AutoTranslatorConfig.ini中  
+[General]  
+Language=zh  
+FromLanguage=ja  
+[Sakura]  
+Endpoint=http://127.0.0.1:8080/completion ##这里修改为你的模型server监听的地址  
+ApiType=Qwen ##Qwen为Sakura 0.9模型,空置则为Sakura 0.8  
 
 启动游戏后，使用快捷键alt+0打开翻译面板，选择SakuraTranslator  
 
