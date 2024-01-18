@@ -1,5 +1,6 @@
 # 介绍
 这是一个基于XUnity.AutoTranslator和Sakura模型的Unity游戏本地翻译器  
+建议使用Sakura v0.9b https://huggingface.co/SakuraLLM/Sakura-13B-LNovel-v0.9b-GGUF/tree/main  
 # 准备
 首先参考XUnity.AutoTranslator文档部署XUnity.AutoTranslator：[XUnity.AutoTranslator](https://github.com/bbepis/XUnity.AutoTranslator)  
 然后参考Sakura模型文档完成本地部署：[Sakura模型本地部署教程](https://books.fishhawk.top/forum/656d60530286f15e3384fcf8)  
