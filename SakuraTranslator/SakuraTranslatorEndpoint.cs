@@ -97,6 +97,10 @@ namespace SakuraTranslator
             var startIndex = responseText.IndexOf("\"content\":") + 10;
             var endIndex = responseText.IndexOf(",", startIndex);
             var translatedLine = responseText.Substring(startIndex, endIndex - startIndex).Trim('\"', ' ', '\r', '\n');
+            if (translatedLine.EndsWith("<|im_end|>"))
+            {
+                translatedLine = translatedLine.Substring(0, translatedLine.Length - "<|im_end|>".Length);
+            }
 
             // 将翻译后的行添加到StringBuilder
             translatedTextBuilder.AppendLine(translatedLine);
