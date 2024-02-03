@@ -133,7 +133,7 @@ namespace SakuraTranslator
                        $"\"temperature\": 0.1," +
                        $"\"top_p\": 0.3," +
                        $"\"max_tokens\": 1000," +
-                       $"\"frequency_penalty\": 0," +
+                       $"\"frequency_penalty\": 0.2," +
                        $"\"do_sample\": false," +
                        $"\"top_k\": 40," +
                        $"\"um_beams\": 1," +
