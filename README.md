@@ -3,7 +3,7 @@
 建议使用Sakura v0.9b https://huggingface.co/SakuraLLM/Sakura-13B-LNovel-v0.9b-GGUF/tree/main  
 # 准备
 首先参考XUnity.AutoTranslator文档部署XUnity.AutoTranslator：[XUnity.AutoTranslator](https://github.com/bbepis/XUnity.AutoTranslator)  
-然后参考Sakura模型文档完成本地部署：[Sakura模型本地部署教程](https://books.fishhawk.top/forum/656d60530286f15e3384fcf8)  
+然后参考Sakura模型文档完成本地部署：[Sakura模型本地部署教程](https://github.com/SakuraLLM/Sakura-13B-Galgame/wiki)  
 # 流程
 确保Sakura服务器成功启动并监听http://127.0.0.1:8080  
 
