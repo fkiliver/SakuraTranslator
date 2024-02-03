@@ -116,6 +116,30 @@ namespace SakuraTranslator
                 $"{line}<|im_end|>\\n<|im_start|>assistant\\n\",\"n_predict\":1024,\"temperature\":0.1,\"top_p\":0.3,\"repeat_penalty\":1," +
                 $"\"frequency_penalty\":0.2,\"top_k\":40,\"seed\":-1}}";
             }
+            else if (_apiType == "OpenAI")
+            {
+                json = $"{{" +
+                       $"\"model\": \"sukinishiro\"," +
+                       $"\"messages\": [" +
+                       $"{{" +
+                       $"\"role\": \"system\"," +
+                       $"\"content\": \"你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，不擅自添加原文中没有的代词。\"" +
+                       $"}}," +
+                                $"{{" +
+                                $"\"role\": \"user\"," +
+                       $"\"content\": \"将下面的日文文本翻译成中文：{line}\"" +
+                       $"}}" +
+                       $"]," +
+                       $"\"temperature\": 0.1," +
+                       $"\"top_p\": 0.3," +
+                       $"\"max_tokens\": 1000," +
+                       $"\"frequency_penalty\": 0," +
+                       $"\"do_sample\": false," +
+                       $"\"top_k\": 40," +
+                       $"\"um_beams\": 1," +
+                       $"\"repetition_penalty\": 1.0" +
+                       $"}}";
+            }
             else
             {
                 json = $"{{\"frequency_penalty\": 0.2, \"n_predict\": 1000, \"prompt\": \"<reserved_106>将下面的日文文本翻译成中文：{line}<reserved_107>\", \"repeat_penalty\": 1, \"temperature\": 0.1, \"top_k\": 40, \"top_p\": 0.3}}";
