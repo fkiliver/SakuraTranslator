@@ -220,7 +220,7 @@ namespace SakuraTranslator
                         content = $"根据以下术语表：\n{dictStr}\n将下面的日文文本根据上述术语表的对应关系和注释翻译成中文：{line}"
                     });
                 }
-                messagesStr = JsonConvert.SerializeObject(messages, Formatting.None);
+                messagesStr = SerializePromptMessages(messages);
             }
             else
             {
@@ -249,6 +249,15 @@ namespace SakuraTranslator
                        $"\"um_beams\": 1," +
                        $"\"repetition_penalty\": 1.0" +
                        $"}}";
+        }
+
+        private string SerializePromptMessages(List<PromptMessage> messages)
+        {
+            string result = "[";
+            result += string.Join(",", messages.Select(x => $"{{\"role\":\"{x.role}\",\"content\":\"{x.content}\"}}").ToArray());
+            result += "]";
+            result = result.Replace("\n", "\\n");
+            return result;
         }
 
         class PromptMessage
