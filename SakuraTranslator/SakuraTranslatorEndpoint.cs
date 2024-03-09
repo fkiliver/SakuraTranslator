@@ -6,8 +6,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
+
+[assembly: AssemblyVersion("0.2.3")]
+[assembly: AssemblyFileVersion("0.2.3")]
 
 namespace SakuraTranslator
 {
