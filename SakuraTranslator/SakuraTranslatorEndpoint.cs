@@ -183,8 +183,8 @@ namespace SakuraTranslator
                 {
                     new PromptMessage
                     {
-                        role = "system",
-                        content = "你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，注意不要擅自添加原文中没有的代词，也不要擅自增加或减少换行。"
+                        Role = "system",
+                        Content = "你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，注意不要擅自添加原文中没有的代词，也不要擅自增加或减少换行。"
                     }
                 };
                 string dictStr;
@@ -208,16 +208,16 @@ namespace SakuraTranslator
                 {
                     messages.Add(new PromptMessage
                     {
-                        role = "user",
-                        content = $"将下面的日文文本翻译成中文：{line}"
+                        Role = "user",
+                        Content = $"将下面的日文文本翻译成中文：{line}"
                     });
                 }
                 else
                 {
                     messages.Add(new PromptMessage
                     {
-                        role = "user",
-                        content = $"根据以下术语表：\n{dictStr}\n将下面的日文文本根据上述术语表的对应关系和注释翻译成中文：{line}"
+                        Role = "user",
+                        Content = $"根据以下术语表：\n{dictStr}\n将下面的日文文本根据上述术语表的对应关系和注释翻译成中文：{line}"
                     });
                 }
                 messagesStr = SerializePromptMessages(messages);
@@ -254,8 +254,8 @@ namespace SakuraTranslator
         private string SerializePromptMessages(List<PromptMessage> messages)
         {
             string result = "[";
-            result += string.Join(",", messages.Select(x => $"{{\"role\":\"{x.role}\"," +
-                $"\"content\":\"{EscapeJsonString(x.content)}\"}}").ToArray());
+            result += string.Join(",", messages.Select(x => $"{{\"role\":\"{x.Role}\"," +
+                $"\"content\":\"{EscapeJsonString(x.Content)}\"}}").ToArray());
             result += "]";
             return result;
         }
@@ -276,8 +276,8 @@ namespace SakuraTranslator
 
         class PromptMessage
         {
-            public string role { get; set; }
-            public string content { get; set; }
+            public string Role { get; set; }
+            public string Content { get; set; }
         }
     }
 }
