@@ -254,10 +254,24 @@ namespace SakuraTranslator
         private string SerializePromptMessages(List<PromptMessage> messages)
         {
             string result = "[";
-            result += string.Join(",", messages.Select(x => $"{{\"role\":\"{x.role}\",\"content\":\"{x.content}\"}}").ToArray());
+            result += string.Join(",", messages.Select(x => $"{{\"role\":\"{x.role}\"," +
+                $"\"content\":\"{EscapeJsonString(x.content)}\"}}").ToArray());
             result += "]";
-            result = result.Replace("\n", "\\n");
             return result;
+        }
+
+        private string EscapeJsonString(string str)
+        {
+            return str
+                .Replace("\\", "\\\\")
+                .Replace("/", "\\/")
+                .Replace("\b", "\\b")
+                .Replace("\f", "\\f")
+                .Replace("\n", "\\n")
+                .Replace("\r", "\\r")
+                .Replace("\t", "\\t")
+                .Replace("\v", "\\v")
+                .Replace("\"", "\\\"");
         }
 
         class PromptMessage
