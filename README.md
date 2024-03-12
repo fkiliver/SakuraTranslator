@@ -25,8 +25,6 @@
  - `DictMode`为`Full`时传递整个字典，为`Partial`或其他时，传递当前翻译句子包含的字典部分
  - `Dict`为json编码的字符串，格式同MTool，为`{"k1":"v1","k2":"v2"}`，暂未发现SakuraLLM官方示例中给的字典注释有什么作用
 
-llama.cpp-b2355，sakura-13b-qwen2beta-v0.10pre0-Q6_K.gguf，Windows和Linux下测试
-理论上高版本llama.cpp和Kaggle都能用，不过我未测试Kaggle
 配置：
 ```
 [Sakura]
