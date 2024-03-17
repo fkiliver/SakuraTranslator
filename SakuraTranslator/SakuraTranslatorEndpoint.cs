@@ -147,6 +147,14 @@ namespace SakuraTranslator
             {
                 translatedLine = translatedLine.Substring(0, translatedLine.Length - "<|im_end|>".Length);
             }
+            if (translatedLine.EndsWith("。") && !line.Trim().EndsWith("。"))
+            {
+                translatedLine = translatedLine.Substring(0, translatedLine.Length - "。".Length);
+            }
+            if (translatedLine.EndsWith("。」") && !line.Trim().EndsWith("。」"))
+            {
+                translatedLine = translatedLine.Substring(0, translatedLine.Length - "。」".Length) + "」";
+            }
 
             // 将翻译后的行添加到StringBuilder
             translatedTextBuilder.AppendLine(translatedLine);
