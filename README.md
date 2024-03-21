@@ -27,11 +27,14 @@
  - `DictMode`为`Full`时传递整个字典，为`Partial`或其他时，传递当前翻译句子包含的字典部分
  - `Dict`为json编码的字符串，格式同MTool，为`{"k1":"v1","k2":"v2"}`，暂未发现SakuraLLM官方示例中给的字典注释有什么作用
 
+添加并发参数MaxConcurrency，单卡多线程总体翻译速度比单线程高（3090，1线程约50t/s，5线程约5x35t/s）
+
 如果你使用sakurav0.10pre0,你的配置文件应该长这样：
 ```
 [Sakura]
 Endpoint=http://127.0.0.1:5000/v1/chat/completions
 ApiType=OpenAI
+MaxConcurrency=1
 UseDict=True
 DictMode=Full
 Dict={"たちばな":"橘","橘":"橘","あやの":"绫乃","綾乃":"绫乃"}
@@ -42,6 +45,7 @@ Dict={"たちばな":"橘","橘":"橘","あやの":"绫乃","綾乃":"绫乃"}
 [Sakura]
 Endpoint=http://127.0.0.1:8080/completion ##这里修改为你的模型server监听的地址  
 ##如果使用kaggle，请在你的链接后面加上/v1/chat/completions，例如：https://114514-1919-810.ngrok-free.app/v1/chat/completions  
+MaxConcurrency=1
 ApiType=Qwen ##OpenAI为kaggle上SakuraAPI，Qwen为本地Sakura 0.9模型，空置则为本地Sakura 0.8模型
 ```
 ## 启动游戏
