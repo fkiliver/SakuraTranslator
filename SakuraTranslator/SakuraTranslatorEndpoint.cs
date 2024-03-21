@@ -10,8 +10,8 @@ using System.Reflection;
 using System.Text;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 
-[assembly: AssemblyVersion("0.2.3")]
-[assembly: AssemblyFileVersion("0.2.3")]
+[assembly: AssemblyVersion("0.3.1")]
+[assembly: AssemblyFileVersion("0.3.1")]
 
 namespace SakuraTranslator
 {
@@ -21,13 +21,14 @@ namespace SakuraTranslator
 
         public string FriendlyName => "Sakura Translator";
 
-        public int MaxConcurrency => 1;
+        public int MaxConcurrency => _maxConcurrency;
 
         public int MaxTranslationsPerRequest => 1;
 
         // params
         private string _endpoint;
         private string _apiType;
+        private int _maxConcurrency;
         private bool _useDict;
         private string _dictMode;
         private Dictionary<string, string> _dict;
@@ -39,6 +40,10 @@ namespace SakuraTranslator
         {
             _endpoint = context.GetOrCreateSetting<string>("Sakura", "Endpoint", "http://127.0.0.1:8080/completion");
             _apiType = context.GetOrCreateSetting<string>("Sakura", "ApiType", string.Empty);
+            if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "MaxConcurrency", "1"), out _maxConcurrency))
+            {
+                _maxConcurrency = 1;
+            }
             if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "UseDict", string.Empty), out _useDict))
             {
                 _useDict = false;
@@ -146,6 +151,14 @@ namespace SakuraTranslator
             if (translatedLine.EndsWith("<|im_end|>"))
             {
                 translatedLine = translatedLine.Substring(0, translatedLine.Length - "<|im_end|>".Length);
+            }
+            if (translatedLine.EndsWith("。") && !line.Trim().EndsWith("。"))
+            {
+                translatedLine = translatedLine.Substring(0, translatedLine.Length - "。".Length);
+            }
+            if (translatedLine.EndsWith("。」") && !line.Trim().EndsWith("。」"))
+            {
+                translatedLine = translatedLine.Substring(0, translatedLine.Length - "。」".Length) + "」";
             }
 
             // 将翻译后的行添加到StringBuilder
