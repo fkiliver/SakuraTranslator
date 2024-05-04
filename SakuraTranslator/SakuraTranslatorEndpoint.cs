@@ -44,6 +44,10 @@ namespace SakuraTranslator
             {
                 _maxConcurrency = 1;
             }
+            if (_maxConcurrency > 2)
+            {
+                ServicePointManager.DefaultConnectionLimit = _maxConcurrency;
+            }
             if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "UseDict", string.Empty), out _useDict))
             {
                 _useDict = false;
