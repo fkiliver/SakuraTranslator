@@ -10,8 +10,8 @@ using System.Reflection;
 using System.Text;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 
-[assembly: AssemblyVersion("0.3.1")]
-[assembly: AssemblyFileVersion("0.3.1")]
+[assembly: AssemblyVersion("0.3.2")]
+[assembly: AssemblyFileVersion("0.3.2")]
 
 namespace SakuraTranslator
 {
