@@ -10,8 +10,8 @@ using System.Reflection;
 using System.Text;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 
-[assembly: AssemblyVersion("0.3.1")]
-[assembly: AssemblyFileVersion("0.3.1")]
+[assembly: AssemblyVersion("0.3.2")]
+[assembly: AssemblyFileVersion("0.3.2")]
 
 namespace SakuraTranslator
 {
@@ -43,6 +43,10 @@ namespace SakuraTranslator
             if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "MaxConcurrency", "1"), out _maxConcurrency))
             {
                 _maxConcurrency = 1;
+            }
+            if (_maxConcurrency > 2)
+            {
+                ServicePointManager.DefaultConnectionLimit = _maxConcurrency;
             }
             if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "UseDict", string.Empty), out _useDict))
             {
