@@ -31,7 +31,7 @@ namespace SakuraTranslator
         private int _maxConcurrency;
         private bool _useDict;
         private string _dictMode;
-        private Dictionary<string, string> _dict;
+        private Dictionary<string, List<string>> _dict;
 
         // local var
         private string _fullDictStr;
@@ -58,11 +58,32 @@ namespace SakuraTranslator
             {
                 try
                 {
-                    _dict = new Dictionary<string, string>();
+                    _dict = new Dictionary<string, List<string>>();
                     JObject dictJObj = JsonConvert.DeserializeObject(dictStr) as JObject;
                     foreach (var item in dictJObj)
                     {
-                        _dict.Add(item.Key, item.Value.ToString());
+                        try
+                        {
+                            var vArr = JArray.Parse(item.Value.ToString());
+                            List<string> vList;
+                            if (vArr.Count <= 0)
+                            {
+                                throw new Exception();
+                            }
+                            else if (vArr.Count == 1)
+                            {
+                                vList = new List<string> { vArr[0].ToString(), string.Empty };
+                            }
+                            else
+                            {
+                                vList = new List<string> { vArr[0].ToString(), vArr[1].ToString() };
+                            }
+                            _dict.Add(item.Key, vList);
+                        }
+                        catch
+                        {
+                            _dict.Add(item.Key, new List<string> { item.Value.ToString(), string.Empty });
+                        }
                     }
                     if (_dict.Count == 0)
                     {
@@ -71,7 +92,8 @@ namespace SakuraTranslator
                     }
                     else
                     {
-                        _fullDictStr = string.Join("\n", _dict.Select(x => $"{x.Key}->{x.Value}").ToArray());
+                        var dictStrings = GetDictStringList(_dict);
+                        _fullDictStr = string.Join("\n", dictStrings.ToArray());
                     }
                 }
                 catch
@@ -80,6 +102,27 @@ namespace SakuraTranslator
                     _fullDictStr = string.Empty;
                 }
             }
+        }
+
+        private List<string> GetDictStringList(IEnumerable<KeyValuePair<string, List<string>>> kvPairs)
+        {
+            List<string> dictList = new List<string>();
+            foreach (var entry in kvPairs)
+            {
+                var src = entry.Key;
+                var dst = entry.Value[0];
+                var info = entry.Value[1];
+                if (string.IsNullOrEmpty(info))
+                {
+                    dictList.Add($"{src}->{dst}");
+                }
+                else
+                {
+                    dictList.Add($"{src}->{dst} #{info}");
+                }
+            }
+
+            return dictList;
         }
 
         public IEnumerator Translate(ITranslationContext context)
@@ -214,7 +257,8 @@ namespace SakuraTranslator
                     var usedDict = _dict.Where(x => line.Contains(x.Key));
                     if (usedDict.Count() > 0)
                     {
-                        dictStr = string.Join("\n", usedDict.Select(x => $"{x.Key}->{x.Value}").ToArray());
+                        var dictStrings = GetDictStringList(usedDict);
+                        dictStr = string.Join("\n", dictStrings.ToArray());
                     }
                     else
                     {
