@@ -44,7 +44,7 @@ namespace SakuraTranslator
             {
                 _maxConcurrency = 1;
             }
-            if (_maxConcurrency > 2)
+            if (_maxConcurrency > ServicePointManager.DefaultConnectionLimit)
             {
                 ServicePointManager.DefaultConnectionLimit = _maxConcurrency;
             }
