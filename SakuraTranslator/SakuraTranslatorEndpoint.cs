@@ -10,8 +10,8 @@ using System.Reflection;
 using System.Text;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 
-[assembly: AssemblyVersion("0.3.2")]
-[assembly: AssemblyFileVersion("0.3.2")]
+[assembly: AssemblyVersion("0.3.3")]
+[assembly: AssemblyFileVersion("0.3.3")]
 
 namespace SakuraTranslator
 {
@@ -31,7 +31,7 @@ namespace SakuraTranslator
         private int _maxConcurrency;
         private bool _useDict;
         private string _dictMode;
-        private Dictionary<string, string> _dict;
+        private Dictionary<string, List<string>> _dict;
 
         // local var
         private string _fullDictStr;
@@ -44,7 +44,7 @@ namespace SakuraTranslator
             {
                 _maxConcurrency = 1;
             }
-            if (_maxConcurrency > 2)
+            if (_maxConcurrency > ServicePointManager.DefaultConnectionLimit)
             {
                 ServicePointManager.DefaultConnectionLimit = _maxConcurrency;
             }
@@ -58,11 +58,32 @@ namespace SakuraTranslator
             {
                 try
                 {
-                    _dict = new Dictionary<string, string>();
+                    _dict = new Dictionary<string, List<string>>();
                     JObject dictJObj = JsonConvert.DeserializeObject(dictStr) as JObject;
                     foreach (var item in dictJObj)
                     {
-                        _dict.Add(item.Key, item.Value.ToString());
+                        try
+                        {
+                            var vArr = JArray.Parse(item.Value.ToString());
+                            List<string> vList;
+                            if (vArr.Count <= 0)
+                            {
+                                throw new Exception();
+                            }
+                            else if (vArr.Count == 1)
+                            {
+                                vList = new List<string> { vArr[0].ToString(), string.Empty };
+                            }
+                            else
+                            {
+                                vList = new List<string> { vArr[0].ToString(), vArr[1].ToString() };
+                            }
+                            _dict.Add(item.Key, vList);
+                        }
+                        catch
+                        {
+                            _dict.Add(item.Key, new List<string> { item.Value.ToString(), string.Empty });
+                        }
                     }
                     if (_dict.Count == 0)
                     {
@@ -71,7 +92,8 @@ namespace SakuraTranslator
                     }
                     else
                     {
-                        _fullDictStr = string.Join("\n", _dict.Select(x => $"{x.Key}->{x.Value}").ToArray());
+                        var dictStrings = GetDictStringList(_dict);
+                        _fullDictStr = string.Join("\n", dictStrings.ToArray());
                     }
                 }
                 catch
@@ -80,6 +102,27 @@ namespace SakuraTranslator
                     _fullDictStr = string.Empty;
                 }
             }
+        }
+
+        private List<string> GetDictStringList(IEnumerable<KeyValuePair<string, List<string>>> kvPairs)
+        {
+            List<string> dictList = new List<string>();
+            foreach (var entry in kvPairs)
+            {
+                var src = entry.Key;
+                var dst = entry.Value[0];
+                var info = entry.Value[1];
+                if (string.IsNullOrEmpty(info))
+                {
+                    dictList.Add($"{src}->{dst}");
+                }
+                else
+                {
+                    dictList.Add($"{src}->{dst} #{info}");
+                }
+            }
+
+            return dictList;
         }
 
         public IEnumerator Translate(ITranslationContext context)
@@ -183,6 +226,10 @@ namespace SakuraTranslator
             {
                 json = MakeOpenAIPrompt(line);
             }
+            else if (_apiType == "Sakura32bV010")
+            {
+                json = MakeSakura32bV010Prompt(line);
+            }
             else
             {
                 json = $"{{\"frequency_penalty\": 0.2, \"n_predict\": 1000, \"prompt\": \"<reserved_106>将下面的日文文本翻译成中文：{line}<reserved_107>\", \"repeat_penalty\": 1, \"temperature\": 0.1, \"top_k\": 40, \"top_p\": 0.3}}";
@@ -214,7 +261,8 @@ namespace SakuraTranslator
                     var usedDict = _dict.Where(x => line.Contains(x.Key));
                     if (usedDict.Count() > 0)
                     {
-                        dictStr = string.Join("\n", usedDict.Select(x => $"{x.Key}->{x.Value}").ToArray());
+                        var dictStrings = GetDictStringList(usedDict);
+                        dictStr = string.Join("\n", dictStrings.ToArray());
                     }
                     else
                     {
@@ -252,6 +300,63 @@ namespace SakuraTranslator
                        $"}}" +
                        $"]";
             }
+            return $"{{" +
+                       $"\"model\": \"sukinishiro\"," +
+                       $"\"messages\": " +
+                       messagesStr +
+                       $"," +
+                       $"\"temperature\": 0.1," +
+                       $"\"top_p\": 0.3," +
+                       $"\"max_tokens\": 1000," +
+                       $"\"frequency_penalty\": 0.2," +
+                       $"\"do_sample\": false," +
+                       $"\"top_k\": 40," +
+                       $"\"um_beams\": 1," +
+                       $"\"repetition_penalty\": 1.0" +
+                       $"}}";
+        }
+
+        private string MakeSakura32bV010Prompt(string line)
+        {
+            string messagesStr = string.Empty;
+            var messages = new List<PromptMessage>
+                {
+                    new PromptMessage
+                    {
+                        Role = "system",
+                        Content = "你是一个轻小说翻译模型，可以流畅通顺地使用给定的术语表以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，注意不要混淆使役态和被动态的主语和宾语，不要擅自添加原文中没有的代词，也不要擅自增加或减少换行。"
+                    }
+                };
+            string dictStr;
+            if (_useDict == false)
+            {
+                dictStr = string.Empty;
+            }
+            else if (_dictMode == "Full")
+            {
+                dictStr = _fullDictStr;
+            }
+            else
+            {
+                var usedDict = _dict.Where(x => line.Contains(x.Key));
+                if (usedDict.Count() > 0)
+                {
+                    var dictStrings = GetDictStringList(usedDict);
+                    dictStr = string.Join("\n", dictStrings.ToArray());
+                }
+                else
+                {
+                    dictStr = string.Empty;
+                }
+            }
+            messages.Add(new PromptMessage
+            {
+                Role = "user",
+                Content = $"根据以下术语表（可以为空）：\n{dictStr}\n\n" +
+                          $"将下面的日文文本根据上述术语表的对应关系和备注翻译成中文：{line}"
+            });
+            messagesStr = SerializePromptMessages(messages);
+
             return $"{{" +
                        $"\"model\": \"sukinishiro\"," +
                        $"\"messages\": " +
