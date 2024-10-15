@@ -16,7 +16,7 @@ using XUnity.AutoTranslator.Plugin.Core.Utilities;
 
 namespace SakuraTranslator
 {
-    public class SakuraTranslatorEndpoint : ITranslateEndpoint
+    public partial class SakuraTranslatorEndpoint : ITranslateEndpoint
     {
         public string Id => "SakuraTranslator";
 
@@ -28,7 +28,9 @@ namespace SakuraTranslator
 
         // params
         private string _endpoint;
-        private string _apiType;
+        private string _modelName;
+        private string _modelVersion;
+        private TranslationModel _modelType;
         private int _maxConcurrency;
         private bool _useDict;
         private string _dictMode;
@@ -39,10 +41,12 @@ namespace SakuraTranslator
 
         public void Initialize(IInitializationContext context)
         {
-            _endpoint = context.GetOrCreateSetting<string>("Sakura", "Endpoint", "http://127.0.0.1:8080/completion");
-            _apiType = context.GetOrCreateSetting<string>("Sakura", "ApiType", string.Empty);
+            _endpoint = context.GetOrCreateSetting<string>("Sakura", "Endpoint", "http://127.0.0.1:5000/v1/chat/completions");
+            _modelName = context.GetOrCreateSetting<string>("Sakura", "ModelName", "Sakura");
+            _modelVersion = context.GetOrCreateSetting<string>("Sakura", "ModelVersion", "1.0");
+            _modelType = GetTranslationModel(_modelName, _modelVersion);
             if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "MaxConcurrency", "1"), out _maxConcurrency))
-            {
+            { 
                 _maxConcurrency = 1;
             }
             if (_maxConcurrency > ServicePointManager.DefaultConnectionLimit)
@@ -216,30 +220,42 @@ namespace SakuraTranslator
         private string MakeRequestJson(string line)
         {
             string json;
-            if (_apiType == "Qwen")
+            if (_modelType == TranslationModel.SakuraV0_8)
+            {
+                json = $"{{\"frequency_penalty\": 0.2, \"n_predict\": 1000, \"prompt\": \"<reserved_106>将下面的日文文本翻译成中文：{JsonHelper.Escape(line)}<reserved_107>\", \"repeat_penalty\": 1, \"temperature\": 0.1, \"top_k\": 40, \"top_p\": 0.3}}";
+            }
+            else if (_modelType == TranslationModel.SakuraV0_9)
             {
                 json = $"{{\"prompt\":\"<|im_start|>system\\n你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，" +
                 $"并联系上下文正确使用人称代词，不擅自添加原文中没有的代词。<|im_end|>\\n<|im_start|>user\\n将下面的日文文本翻译成中文：" +
-                $"{JsonHelper.Escape(line)}<|im_end|>\\n<|im_start|>assistant\\n\",\"n_predict\":1024,\"temperature\":0.1,\"top_p\":0.3,\"repeat_penalty\":1," +
-                $"\"frequency_penalty\":0.2,\"top_k\":40,\"seed\":-1}}";
+                $"{JsonHelper.Escape(line)}<|im_end|>\\n<|im_start|>assistant\\n\",\"n_predict\":512,\"temperature\":0.1,\"top_p\":0.3,\"repeat_penalty\":1," +
+                $"\"frequency_penalty\":0.2,\"seed\":-1}}";
             }
-            else if (_apiType == "OpenAI")
+            else if (_modelType == TranslationModel.SakuraV0_10)
             {
-                json = MakeOpenAIPrompt(line);
+                json = MakeSakuraPromptV0_10(line);
             }
-            else if (_apiType == "Sakura32bV010")
+            else if (_modelType == TranslationModel.Sakura32bV0_10)
             {
-                json = MakeSakura32bV010Prompt(line);
+                json = MakeSakura32bPromptV0_10(line);
+            }
+            else if (_modelType == TranslationModel.SakuraV1_0)
+            {
+                json = MakeSakuraPromptV1_0(line);
+            }
+            else if (_modelType == TranslationModel.GalTranslV2_6)
+            {
+                json = MakeGalTranslPromptV2_6(line);
             }
             else
             {
-                json = $"{{\"frequency_penalty\": 0.2, \"n_predict\": 1000, \"prompt\": \"<reserved_106>将下面的日文文本翻译成中文：{JsonHelper.Escape(line)}<reserved_107>\", \"repeat_penalty\": 1, \"temperature\": 0.1, \"top_k\": 40, \"top_p\": 0.3}}";
+                json = MakeSakuraPromptV1_0(line);
             }
 
             return json;
         }
 
-        private string MakeOpenAIPrompt(string line)
+        private string MakeSakuraPromptV0_10(string line)
         {
             string messagesStr = string.Empty;
             if (_useDict)
@@ -302,22 +318,21 @@ namespace SakuraTranslator
                        $"]";
             }
             return $"{{" +
-                       $"\"model\": \"sukinishiro\"," +
-                       $"\"messages\": " +
-                       messagesStr +
-                       $"," +
-                       $"\"temperature\": 0.1," +
-                       $"\"top_p\": 0.3," +
-                       $"\"max_tokens\": 1000," +
-                       $"\"frequency_penalty\": 0.2," +
-                       $"\"do_sample\": false," +
-                       $"\"top_k\": 40," +
-                       $"\"um_beams\": 1," +
-                       $"\"repetition_penalty\": 1.0" +
-                       $"}}";
+                   $"\"model\": \"sukinishiro\"," +
+                   $"\"messages\": " +
+                   messagesStr +
+                   $"," +
+                   $"\"temperature\": 0.1," +
+                   $"\"top_p\": 0.3," +
+                   $"\"max_tokens\": 512," +
+                   $"\"frequency_penalty\": 0.2," +
+                   $"\"do_sample\": true," +
+                   $"\"num_beams\": 1," +
+                   $"\"repetition_penalty\": 1.0" +
+                   $"}}";
         }
 
-        private string MakeSakura32bV010Prompt(string line)
+        private string MakeSakura32bPromptV0_10(string line)
         {
             string messagesStr = string.Empty;
             var messages = new List<PromptMessage>
@@ -359,19 +374,144 @@ namespace SakuraTranslator
             messagesStr = SerializePromptMessages(messages);
 
             return $"{{" +
-                       $"\"model\": \"sukinishiro\"," +
-                       $"\"messages\": " +
-                       messagesStr +
-                       $"," +
-                       $"\"temperature\": 0.1," +
-                       $"\"top_p\": 0.3," +
-                       $"\"max_tokens\": 1000," +
-                       $"\"frequency_penalty\": 0.2," +
-                       $"\"do_sample\": false," +
-                       $"\"top_k\": 40," +
-                       $"\"um_beams\": 1," +
-                       $"\"repetition_penalty\": 1.0" +
-                       $"}}";
+                   $"\"model\": \"sukinishiro\"," +
+                   $"\"messages\": " +
+                   messagesStr +
+                   $"," +
+                   $"\"temperature\": 0.1," +
+                   $"\"top_p\": 0.3," +
+                   $"\"max_tokens\": 512," +
+                   $"\"frequency_penalty\": 0.2," +
+                   $"\"do_sample\": true," +
+                   $"\"num_beams\": 1," +
+                   $"\"repetition_penalty\": 1.0" +
+                   $"}}";
+        }
+
+        private string MakeSakuraPromptV1_0(string line)
+        {
+            string messagesStr = string.Empty;
+            if (_useDict == false)
+            {
+                messagesStr = SerializePromptMessages(new List<PromptMessage>
+                {
+                    new PromptMessage
+                    {
+                        Role = "system",
+                        Content = "你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，不擅自添加原文中没有的代词。"
+                    },
+                    new PromptMessage
+                    {
+                        Role = "user",
+                        Content = $"将下面的日文文本翻译成中文：{line}"
+                    }
+                });
+            }
+            else
+            {
+                var messages = new List<PromptMessage>
+                {
+                    new PromptMessage
+                    {
+                        Role = "system",
+                        Content = "你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，不擅自添加原文中没有的代词。"
+                    }
+                };
+                string dictStr;
+                if (_dictMode == "Full")
+                {
+                    dictStr = _fullDictStr;
+                }
+                else
+                {
+                    var usedDict = _dict.Where(x => line.Contains(x.Key));
+                    if (usedDict.Count() > 0)
+                    {
+                        var dictStrings = GetDictStringList(usedDict);
+                        dictStr = string.Join("\n", dictStrings.ToArray());
+                    }
+                    else
+                    {
+                        dictStr = string.Empty;
+                    }
+                }
+                messages.Add(new PromptMessage
+                {
+                    Role = "user",
+                    Content = $"根据以下术语表（可以为空）：\n{dictStr}\n" +
+                              $"将下面的日文文本根据对应关系和备注翻译成中文：{line}"
+                });
+                messagesStr = SerializePromptMessages(messages);
+            }
+            return $"{{" +
+                   $"\"model\": \"sukinishiro\"," +
+                   $"\"messages\": " +
+                   messagesStr +
+                   $"," +
+                   $"\"temperature\": 0.1," +
+                   $"\"top_p\": 0.3," +
+                   $"\"max_tokens\": 512," +
+                   $"\"frequency_penalty\": 0.2," +
+                   $"\"do_sample\": true," +
+                   $"\"num_beams\": 1," +
+                   $"\"repetition_penalty\": 1.0" +
+                   $"}}";
+        }
+
+        private string MakeGalTranslPromptV2_6(string line)
+        {
+            string messagesStr = string.Empty;
+            var messages = new List<PromptMessage>
+                {
+                    new PromptMessage
+                    {
+                        Role = "system",
+                        Content = "你是一个视觉小说翻译模型，可以通顺地使用给定的术语表以指定的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，注意不要混淆使役态和被动态的主语和宾语，不要擅自添加原文中没有的特殊符号，也不要擅自增加或减少换行。"
+                    }
+                };
+            string dictStr;
+            if (_useDict == false)
+            {
+                dictStr = string.Empty;
+            }
+            else if (_dictMode == "Full")
+            {
+                dictStr = _fullDictStr;
+            }
+            else
+            {
+                var usedDict = _dict.Where(x => line.Contains(x.Key));
+                if (usedDict.Count() > 0)
+                {
+                    var dictStrings = GetDictStringList(usedDict);
+                    dictStr = string.Join("\n", dictStrings.ToArray());
+                }
+                else
+                {
+                    dictStr = string.Empty;
+                }
+            }
+            messages.Add(new PromptMessage
+            {
+                Role = "user",
+                Content = $"参考以下术语表（可为空，格式为src->dst #备注）：\n{dictStr}\n" +
+                          $"根据上述术语表的对应关系和备注，结合历史剧情和上下文，以流畅的风格将下面的文本从日文翻译成简体中文：{line}"
+            });
+            messagesStr = SerializePromptMessages(messages);
+
+            return $"{{" +
+                   $"\"model\": \"sukinishiro\"," +
+                   $"\"messages\": " +
+                   messagesStr +
+                   $"," +
+                   $"\"temperature\": 0.2," +
+                   $"\"top_p\": 0.8," +
+                   $"\"max_tokens\": 512," +
+                   $"\"frequency_penalty\": 0.2," +
+                   $"\"do_sample\": true," +
+                   $"\"num_beams\": 1," +
+                   $"\"repetition_penalty\": 1.0" +
+                   $"}}";
         }
 
         private string SerializePromptMessages(List<PromptMessage> messages)
