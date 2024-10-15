@@ -9,6 +9,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
+using XUnity.AutoTranslator.Plugin.Core.Utilities;
 
 [assembly: AssemblyVersion("0.3.4")]
 [assembly: AssemblyFileVersion("0.3.4")]
@@ -219,7 +220,7 @@ namespace SakuraTranslator
             {
                 json = $"{{\"prompt\":\"<|im_start|>system\\n你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，" +
                 $"并联系上下文正确使用人称代词，不擅自添加原文中没有的代词。<|im_end|>\\n<|im_start|>user\\n将下面的日文文本翻译成中文：" +
-                $"{EscapeJsonString(line)}<|im_end|>\\n<|im_start|>assistant\\n\",\"n_predict\":1024,\"temperature\":0.1,\"top_p\":0.3,\"repeat_penalty\":1," +
+                $"{JsonHelper.Escape(line)}<|im_end|>\\n<|im_start|>assistant\\n\",\"n_predict\":1024,\"temperature\":0.1,\"top_p\":0.3,\"repeat_penalty\":1," +
                 $"\"frequency_penalty\":0.2,\"top_k\":40,\"seed\":-1}}";
             }
             else if (_apiType == "OpenAI")
@@ -232,7 +233,7 @@ namespace SakuraTranslator
             }
             else
             {
-                json = $"{{\"frequency_penalty\": 0.2, \"n_predict\": 1000, \"prompt\": \"<reserved_106>将下面的日文文本翻译成中文：{EscapeJsonString(line)}<reserved_107>\", \"repeat_penalty\": 1, \"temperature\": 0.1, \"top_k\": 40, \"top_p\": 0.3}}";
+                json = $"{{\"frequency_penalty\": 0.2, \"n_predict\": 1000, \"prompt\": \"<reserved_106>将下面的日文文本翻译成中文：{JsonHelper.Escape(line)}<reserved_107>\", \"repeat_penalty\": 1, \"temperature\": 0.1, \"top_k\": 40, \"top_p\": 0.3}}";
             }
 
             return json;
@@ -296,7 +297,7 @@ namespace SakuraTranslator
                        $"}}," +
                                 $"{{" +
                                 $"\"role\": \"user\"," +
-                       $"\"content\": \"将下面的日文文本翻译成中文：{EscapeJsonString(line)}\"" +
+                       $"\"content\": \"将下面的日文文本翻译成中文：{JsonHelper.Escape(line)}\"" +
                        $"}}" +
                        $"]";
             }
@@ -377,23 +378,9 @@ namespace SakuraTranslator
         {
             string result = "[";
             result += string.Join(",", messages.Select(x => $"{{\"role\":\"{x.Role}\"," +
-                $"\"content\":\"{EscapeJsonString(x.Content)}\"}}").ToArray());
+                $"\"content\":\"{JsonHelper.Escape(x.Content)}\"}}").ToArray());
             result += "]";
             return result;
-        }
-
-        private string EscapeJsonString(string str)
-        {
-            return str
-                .Replace("\\", "\\\\")
-                .Replace("/", "\\/")
-                .Replace("\b", "\\b")
-                .Replace("\f", "\\f")
-                .Replace("\n", "\\n")
-                .Replace("\r", "\\r")
-                .Replace("\t", "\\t")
-                .Replace("\v", "\\v")
-                .Replace("\"", "\\\"");
         }
 
         class PromptMessage
