@@ -6,7 +6,7 @@
 
 # 介绍
 这是一个基于XUnity.AutoTranslator和Sakura模型的Unity游戏本地翻译器,能够提供高质量离线日文翻译  
-建议使用[Sakura-13B-Galgame翻译模型](https://github.com/SakuraLLM/Sakura-13B-Galgame)，当前支持版本为Sakura v0.8/v0.9/v0.10/v1.0,GalTrans2.6
+建议使用[Galtransl-v2.6翻译模型](https://github.com/SakuraLLM/Sakura-13B-Galgame)，当前支持版本为Sakura v0.8/v0.9/v0.10/v1.0,GalTrans2.6
 
 ## TODO
 - [ ] 添加退化检测（搁置，较新的模型基本不需要）
