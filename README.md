@@ -9,10 +9,10 @@
 建议使用[Sakura-13B-Galgame翻译模型](https://github.com/SakuraLLM/Sakura-13B-Galgame)，当前支持版本为Sakura v0.8/v0.9/v0.10pre0
 
 ## TODO
-- [ ] 添加退化检测
-- [ ] 添加历史上文
-- [ ] 添加对sakura v0.10支持
-- [ ] 去除对sakura v0.9/v0.8支持
+- [ ] 添加退化检测（搁置，较新的模型基本不需要）
+- [ ] 添加历史上文（搁置，难以将对话文本与ui文本区分，需要更好的规则）
+- [x] 重新整理对不同模型的支持
+
 
 ## 快速开始
 ### 部署教程：详见[本仓库wiki](https://github.com/fkiliver/SakuraTranslator/wiki)
