@@ -7,8 +7,8 @@
     <ProjectGuid>{25B64EAB-5D7C-443A-AB10-DC0BE86CB035}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SakuraTranslator</RootNamespace>
-    <AssemblyName>SakuraTranslator</AssemblyName>
+    <RootNamespace>SakuraTranslate</RootNamespace>
+    <AssemblyName>SakuraTranslate</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TranslationModel.cs" />
-    <Compile Include="SakuraTranslatorEndpoint.cs" />
+    <Compile Include="SakuraTranslateEndpoint.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

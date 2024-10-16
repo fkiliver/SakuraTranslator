@@ -8,17 +8,18 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 using XUnity.AutoTranslator.Plugin.Core.Utilities;
 
 [assembly: AssemblyVersion("0.3.4")]
 [assembly: AssemblyFileVersion("0.3.4")]
 
-namespace SakuraTranslator
+namespace SakuraTranslate
 {
-    public partial class SakuraTranslatorEndpoint : ITranslateEndpoint
+    public partial class SakuraTranslateEndpoint : ITranslateEndpoint
     {
-        public string Id => "SakuraTranslator";
+        public string Id => "SakuraTranslate";
 
         public string FriendlyName => "Sakura Translator";
 
@@ -132,38 +133,13 @@ namespace SakuraTranslator
 
         public IEnumerator Translate(ITranslationContext context)
         {
+            // 抽取未翻译文本
             var untranslatedText = context.UntranslatedText;
 
-            // 以换行符分割文本
-            string[] lines = untranslatedText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-            StringBuilder translatedTextBuilder = new StringBuilder();
+            //Console.WriteLine($"提交的翻译文本: {untranslatedText}");
 
-            foreach (var line in lines)
-            {
-                if (!string.IsNullOrEmpty(line))
-                {
-                    // 逐行翻译
-                    IEnumerator translateLineCoroutine = TranslateLine(line, translatedTextBuilder);
-                    while (translateLineCoroutine.MoveNext())
-                    {
-                        yield return null;
-                    }
-                }
-                else
-                {
-                    // 保留空行
-                    translatedTextBuilder.AppendLine();
-                }
-            }
-
-            string translatedText = translatedTextBuilder.ToString().TrimEnd('\r', '\n');
-            context.Complete(translatedText);
-        }
-
-        private IEnumerator TranslateLine(string line, StringBuilder translatedTextBuilder)
-        {
             // 构建请求JSON
-            string json = MakeRequestJson(line);
+            string json = MakeRequestJson(untranslatedText);
             var dataBytes = Encoding.UTF8.GetBytes(json);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_endpoint);
@@ -197,24 +173,30 @@ namespace SakuraTranslator
             }
 
             // 手动解析JSON响应
-            var startIndex = responseText.IndexOf("\"content\":") + 10;
-            var endIndex = responseText.IndexOf(",", startIndex);
-            var translatedLine = responseText.Substring(startIndex, endIndex - startIndex).Trim('\"', ' ', '\r', '\n');
-            if (translatedLine.EndsWith("<|im_end|>"))
-            {
-                translatedLine = translatedLine.Substring(0, translatedLine.Length - "<|im_end|>".Length);
-            }
-            if (translatedLine.EndsWith("。") && !line.Trim().EndsWith("。"))
-            {
-                translatedLine = translatedLine.Substring(0, translatedLine.Length - "。".Length);
-            }
-            if (translatedLine.EndsWith("。」") && !line.Trim().EndsWith("。」"))
-            {
-                translatedLine = translatedLine.Substring(0, translatedLine.Length - "。」".Length) + "」";
-            }
+            //var startIndex = responseText.IndexOf("\"content\":") + 10;
+            //var endIndex = responseText.IndexOf(",", startIndex);
+            //var translatedText = responseText.Substring(startIndex, endIndex - startIndex);
 
-            // 将翻译后的行添加到StringBuilder
-            translatedTextBuilder.AppendLine(translatedLine);
+            JObject jsonResponse = JObject.Parse(responseText);
+            string translatedText = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString();
+
+
+            //历史遗留
+            //if (translatedLine.EndsWith("<|im_end|>"))
+            //{
+            //    translatedLine = translatedLine.Substring(0, translatedLine.Length - "<|im_end|>".Length);
+            //}
+            //if (translatedLine.EndsWith("。") && !line.Trim().EndsWith("。"))
+            //{
+            //    translatedLine = translatedLine.Substring(0, translatedLine.Length - "。".Length);
+            //}
+            //if (translatedLine.EndsWith("。」") && !line.Trim().EndsWith("。」"))
+            //{
+            //    translatedLine = translatedLine.Substring(0, translatedLine.Length - "。」".Length) + "」";
+            //}
+
+            // 提交翻译文本
+            context.Complete(translatedText);
         }
 
         private string MakeRequestJson(string line)
@@ -418,6 +400,10 @@ namespace SakuraTranslator
                     }
                 };
                 string dictStr;
+                if (_useDict == false)
+                {
+                    dictStr = string.Empty;
+                }
                 if (_dictMode == "Full")
                 {
                     dictStr = _fullDictStr;
@@ -435,12 +421,27 @@ namespace SakuraTranslator
                         dictStr = string.Empty;
                     }
                 }
-                messages.Add(new PromptMessage
+
+                if (_useDict == false)
                 {
-                    Role = "user",
-                    Content = $"根据以下术语表（可以为空）：\n{dictStr}\n" +
+                    // 如果术语表为空，直接构建翻译指令
+                    messages.Add(new PromptMessage
+                    {
+                        Role = "user",
+                        Content = $"将下面的日文文本翻译成中文：{line}"
+                    });
+                }
+                else
+
+                {
+                    messages.Add(new PromptMessage
+                    {
+                        Role = "user",
+                        Content = $"根据以下术语表（可以为空）：\n{dictStr}\n" +
                               $"将下面的日文文本根据对应关系和备注翻译成中文：{line}"
-                });
+                    });
+                }
+                    
                 messagesStr = SerializePromptMessages(messages);
             }
             return $"{{" +
@@ -491,13 +492,28 @@ namespace SakuraTranslator
                     dictStr = string.Empty;
                 }
             }
-            messages.Add(new PromptMessage
+
+            if (_useDict == false)
             {
-                Role = "user",
-                Content = $"参考以下术语表（可为空，格式为src->dst #备注）：\n{dictStr}\n" +
-                          $"根据上述术语表的对应关系和备注，结合历史剧情和上下文，以流畅的风格将下面的文本从日文翻译成简体中文：{line}"
-            });
+                // 如果术语表为空，直接构建翻译指令
+                messages.Add(new PromptMessage
+                {
+                    Role = "user",
+                    Content = $"将下面的日文文本翻译成中文：{line}"
+                });
+            }
+            else
+            {
+                messages.Add(new PromptMessage
+                {
+                    Role = "user",
+                    Content = $"参考以下术语表（可为空，格式为src->dst #备注）：\n{dictStr}\n" +
+                                $"根据上述术语表的对应关系和备注，结合历史剧情和上下文，以流畅的风格将下面的文本从日文翻译成简体中文：{line}"
+                });
+            }
+
             messagesStr = SerializePromptMessages(messages);
+            //Console.WriteLine($"提交的prompt: {messagesStr}");
 
             return $"{{" +
                    $"\"model\": \"sukinishiro\"," +

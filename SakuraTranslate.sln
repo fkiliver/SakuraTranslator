@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SakuraTranslator", "SakuraTranslator\SakuraTranslator.csproj", "{25B64EAB-5D7C-443A-AB10-DC0BE86CB035}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SakuraTranslate", "SakuraTranslator\SakuraTranslate.csproj", "{25B64EAB-5D7C-443A-AB10-DC0BE86CB035}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

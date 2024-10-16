@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 
-namespace SakuraTranslator
+namespace SakuraTranslate
 {
-    public partial class SakuraTranslatorEndpoint : ITranslateEndpoint
+    public partial class SakuraTranslateEndpoint : ITranslateEndpoint
     {
         private enum TranslationModel
         {
