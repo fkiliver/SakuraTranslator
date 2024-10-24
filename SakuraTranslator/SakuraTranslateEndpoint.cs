@@ -42,7 +42,7 @@ namespace SakuraTranslate
 
         public void Initialize(IInitializationContext context)
         {
-            _endpoint = context.GetOrCreateSetting<string>("Sakura", "Endpoint", "http://127.0.0.1:5000/v1/chat/completions");
+            _endpoint = context.GetOrCreateSetting<string>("Sakura", "Endpoint", "http://127.0.0.1:8080/v1/chat/completions");
             _modelName = context.GetOrCreateSetting<string>("Sakura", "ModelName", "Sakura");
             _modelVersion = context.GetOrCreateSetting<string>("Sakura", "ModelVersion", "1.0");
             _modelType = GetTranslationModel(_modelName, _modelVersion);
