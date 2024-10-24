@@ -441,7 +441,6 @@ namespace SakuraTranslate
 
         private string MakeGalTranslPromptV2_6(string line)
         {
-            string messagesStr = string.Empty;
             var messages = new List<PromptMessage>
                 {
                     new PromptMessage
@@ -473,26 +472,14 @@ namespace SakuraTranslate
                 }
             }
 
-            if (_useDict == false)
+            messages.Add(new PromptMessage
             {
-                // 如果术语表为空，直接构建翻译指令
-                messages.Add(new PromptMessage
-                {
-                    Role = "user",
-                    Content = $"将下面的日文文本翻译成中文：{line}"
-                });
-            }
-            else
-            {
-                messages.Add(new PromptMessage
-                {
-                    Role = "user",
-                    Content = $"参考以下术语表（可为空，格式为src->dst #备注）：\n{dictStr}\n" +
-                                $"根据上述术语表的对应关系和备注，结合历史剧情和上下文，以流畅的风格将下面的文本从日文翻译成简体中文：{line}"
-                });
-            }
+                Role = "user",
+                Content = $"参考以下术语表（可为空，格式为src->dst #备注）：{(string.IsNullOrEmpty(dictStr) ? string.Empty : "\n" + dictStr)}\n\n" +
+                            $"根据上述术语表的对应关系和备注，结合历史剧情和上下文，以流畅的风格将下面的文本从日文翻译成简体中文：{line}"
+            });
 
-            messagesStr = SerializePromptMessages(messages);
+            var messagesStr = SerializePromptMessages(messages);
             //Console.WriteLine($"提交的prompt: {messagesStr}");
 
             return $"{{" +
