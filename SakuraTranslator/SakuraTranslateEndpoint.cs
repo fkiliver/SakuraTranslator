@@ -372,26 +372,7 @@ namespace SakuraTranslate
 
         private string MakeSakuraPromptV1_0(string line)
         {
-            string messagesStr = string.Empty;
-            if (_useDict == false)
-            {
-                messagesStr = SerializePromptMessages(new List<PromptMessage>
-                {
-                    new PromptMessage
-                    {
-                        Role = "system",
-                        Content = "你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，不擅自添加原文中没有的代词。"
-                    },
-                    new PromptMessage
-                    {
-                        Role = "user",
-                        Content = $"将下面的日文文本翻译成中文：{line}"
-                    }
-                });
-            }
-            else
-            {
-                var messages = new List<PromptMessage>
+            var messages = new List<PromptMessage>
                 {
                     new PromptMessage
                     {
@@ -399,51 +380,50 @@ namespace SakuraTranslate
                         Content = "你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，不擅自添加原文中没有的代词。"
                     }
                 };
-                string dictStr;
-                if (_useDict == false)
+            string dictStr;
+            if (_useDict == false)
+            {
+                dictStr = string.Empty;
+            }
+            if (_dictMode == "Full")
+            {
+                dictStr = _fullDictStr;
+            }
+            else
+            {
+                var usedDict = _dict.Where(x => line.Contains(x.Key));
+                if (usedDict.Count() > 0)
+                {
+                    var dictStrings = GetDictStringList(usedDict);
+                    dictStr = string.Join("\n", dictStrings.ToArray());
+                }
+                else
                 {
                     dictStr = string.Empty;
                 }
-                if (_dictMode == "Full")
-                {
-                    dictStr = _fullDictStr;
-                }
-                else
-                {
-                    var usedDict = _dict.Where(x => line.Contains(x.Key));
-                    if (usedDict.Count() > 0)
-                    {
-                        var dictStrings = GetDictStringList(usedDict);
-                        dictStr = string.Join("\n", dictStrings.ToArray());
-                    }
-                    else
-                    {
-                        dictStr = string.Empty;
-                    }
-                }
-
-                if (_useDict == false)
-                {
-                    // 如果术语表为空，直接构建翻译指令
-                    messages.Add(new PromptMessage
-                    {
-                        Role = "user",
-                        Content = $"将下面的日文文本翻译成中文：{line}"
-                    });
-                }
-                else
-
-                {
-                    messages.Add(new PromptMessage
-                    {
-                        Role = "user",
-                        Content = $"根据以下术语表（可以为空）：\n{dictStr}\n" +
-                              $"将下面的日文文本根据对应关系和备注翻译成中文：{line}"
-                    });
-                }
-                    
-                messagesStr = SerializePromptMessages(messages);
             }
+
+            if (_useDict == false)
+            {
+                // 如果术语表为空，直接构建翻译指令
+                messages.Add(new PromptMessage
+                {
+                    Role = "user",
+                    Content = $"将下面的日文文本翻译成中文：{line}"
+                });
+            }
+            else
+            {
+                messages.Add(new PromptMessage
+                {
+                    Role = "user",
+                    Content = $"根据以下术语表（可以为空）：\n{dictStr}\n" +
+                          $"将下面的日文文本根据对应关系和备注翻译成中文：{line}"
+                });
+            }
+
+            var messagesStr = SerializePromptMessages(messages);
+
             return $"{{" +
                    $"\"model\": \"sukinishiro\"," +
                    $"\"messages\": " +
