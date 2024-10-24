@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SakuraUtil.cs" />
     <Compile Include="TranslationModel.cs" />
     <Compile Include="SakuraTranslateEndpoint.cs" />
   </ItemGroup>

@@ -180,20 +180,7 @@ namespace SakuraTranslate
             JObject jsonResponse = JObject.Parse(responseText);
             string translatedText = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString();
 
-
-            //历史遗留
-            //if (translatedLine.EndsWith("<|im_end|>"))
-            //{
-            //    translatedLine = translatedLine.Substring(0, translatedLine.Length - "<|im_end|>".Length);
-            //}
-            //if (translatedLine.EndsWith("。") && !line.Trim().EndsWith("。"))
-            //{
-            //    translatedLine = translatedLine.Substring(0, translatedLine.Length - "。".Length);
-            //}
-            //if (translatedLine.EndsWith("。」") && !line.Trim().EndsWith("。」"))
-            //{
-            //    translatedLine = translatedLine.Substring(0, translatedLine.Length - "。」".Length) + "」";
-            //}
+            translatedText = SakuraUtil.FixTranslationEnd(untranslatedText, translatedText);
 
             // 提交翻译文本
             context.Complete(translatedText);
