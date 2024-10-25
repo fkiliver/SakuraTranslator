@@ -47,7 +47,7 @@ namespace SakuraTranslate
             _modelVersion = context.GetOrCreateSetting<string>("Sakura", "ModelVersion", "1.0");
             _modelType = GetTranslationModel(_modelName, _modelVersion);
             if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "MaxConcurrency", "1"), out _maxConcurrency))
-            { 
+            {
                 _maxConcurrency = 1;
             }
             if (_maxConcurrency > ServicePointManager.DefaultConnectionLimit)
@@ -178,7 +178,15 @@ namespace SakuraTranslate
             //var translatedText = responseText.Substring(startIndex, endIndex - startIndex);
 
             JObject jsonResponse = JObject.Parse(responseText);
-            string translatedText = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString();
+            string translatedText;
+            if (IsOpenAIEndpoint(_modelType))
+            {
+                translatedText = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString();
+            }
+            else
+            {
+                translatedText = jsonResponse["content"]?.ToString();
+            }
 
             translatedText = SakuraUtil.FixTranslationEnd(untranslatedText, translatedText);
 

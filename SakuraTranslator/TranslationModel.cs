@@ -47,5 +47,10 @@ namespace SakuraTranslate
                     return TranslationModel.SakuraV1_0;
             }
         }
+
+        private static bool IsOpenAIEndpoint(TranslationModel model)
+        {
+            return !(model == TranslationModel.SakuraV0_8 || model == TranslationModel.SakuraV0_9);
+        }
     }
 }
