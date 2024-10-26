@@ -6,7 +6,7 @@
 
 # 介绍
 这是一个基于XUnity.AutoTranslator和Sakura模型的Unity游戏本地翻译器,能够提供高质量离线日文翻译  
-建议使用[Galtransl-v2.6翻译模型](https://github.com/SakuraLLM/Sakura-13B-Galgame)，当前支持版本为Sakura v0.8/v0.9/v0.10/v1.0,GalTrans2.6
+建议使用[Galtransl-v2.6翻译模型](https://huggingface.co/SakuraLLM/GalTransl-7B-v2.6)，当前支持版本为Sakura v0.8/v0.9/v0.10/v1.0,GalTrans2.6
 
 ## TODO
 - [ ] 添加退化检测（搁置，较新的模型基本不需要）
@@ -60,7 +60,7 @@ ModelName=Sakura
 ModelVersion=1.0
 MaxConcurrency=2
 UseDict=True
-DictMode=Full
+DictMode=Partial
 Dict={"アイリス":["艾莉斯","女"]}
 ```
 
@@ -69,8 +69,8 @@ Dict={"アイリス":["艾莉斯","女"]}
 | ModelName  | ModelVersion | TranslationModel       |
 |------------|--------------|------------------------|
 | Sakura     | 0.8          | Sakura 0.8             |
-| Sakura     | 0.9          | Sakura/Sakura32B 0.9*             |
-| Sakura     | 0.10         | Sakura 0.10pre1            |
+| Sakura     | 0.9          | Sakura 7B/14B/32B 0.9  |
+| Sakura     | 0.10         | Sakura 0.10            |
 | Sakura     | 1.0          | Sakura 1.0             |
 | Sakura     | *            | Sakura 1.0 (默认)      |
 | Sakura32B  | 0.10         | Sakura32B 0.10         |
@@ -79,7 +79,9 @@ Dict={"アイリス":["艾莉斯","女"]}
 | GalTransl  | *            | GalTransl 2.6 (默认)   |
 | *          | *            | Sakura 1.0 (默认)      |
 
-模型相关默认值设置为Sakura 1.0，注意Sakura32B 0.9*需将`ModelName`设置为`Sakura`
+模型相关默认值设置为Sakura 1.0，注意Sakura 7B/14B/32B 0.9系列模型需将`ModelName`设置为`Sakura`  
+其中Sakura 0.8/0.9模型需要将`Endpoint`设置为completion api（例：`http://127.0.0.1:8080/completion`）  
+Sakura 0.10/1.0和GalTransl模型需要将`Endpoint`设置为chat completions api（例：`http://127.0.0.1:8080/v1/chat/completions`）  
 
 ### 字典
 #### 字典配置项
