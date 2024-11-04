@@ -398,7 +398,7 @@ namespace SakuraTranslate
                 }
             }
 
-            if (_useDict == false)
+            if (_useDict == false || string.IsNullOrEmpty(dictStr))
             {
                 // 如果术语表为空，直接构建翻译指令
                 messages.Add(new PromptMessage
