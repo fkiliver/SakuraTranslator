@@ -56,7 +56,7 @@ namespace SakuraTranslate
             {
                 _useDict = false;
             }
-            _dictMode = context.GetOrCreateSetting<string>("Sakura", "DictMode", "Full");
+            _dictMode = context.GetOrCreateSetting<string>("Sakura", "DictMode", "Partial");
             var dictStr = context.GetOrCreateSetting<string>("Sakura", "Dict", string.Empty);
             if (!string.IsNullOrEmpty(dictStr))
             {
