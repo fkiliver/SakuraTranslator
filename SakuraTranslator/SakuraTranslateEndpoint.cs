@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,12 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Xml.Linq;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 using XUnity.AutoTranslator.Plugin.Core.Utilities;
 
-[assembly: AssemblyVersion("0.3.5")]
-[assembly: AssemblyFileVersion("0.3.5")]
+[assembly: AssemblyVersion("0.3.6")]
+[assembly: AssemblyFileVersion("0.3.6")]
 
 namespace SakuraTranslate
 {
@@ -58,19 +56,24 @@ namespace SakuraTranslate
             {
                 _useDict = false;
             }
-            _dictMode = context.GetOrCreateSetting<string>("Sakura", "DictMode", "Full");
+            _dictMode = context.GetOrCreateSetting<string>("Sakura", "DictMode", "Partial");
             var dictStr = context.GetOrCreateSetting<string>("Sakura", "Dict", string.Empty);
-            if (!string.IsNullOrEmpty(dictStr))
+            if (string.IsNullOrEmpty(dictStr))
+            {
+                _useDict = false;
+                _fullDictStr = string.Empty;
+            }
+            else
             {
                 try
                 {
                     _dict = new Dictionary<string, List<string>>();
-                    JObject dictJObj = JsonConvert.DeserializeObject(dictStr) as JObject;
+                    var dictJObj = JSON.Parse(dictStr);
                     foreach (var item in dictJObj)
                     {
                         try
                         {
-                            var vArr = JArray.Parse(item.Value.ToString());
+                            var vArr = JSON.Parse(item.Value.ToString()).AsArray;
                             List<string> vList;
                             if (vArr.Count <= 0)
                             {
@@ -78,17 +81,17 @@ namespace SakuraTranslate
                             }
                             else if (vArr.Count == 1)
                             {
-                                vList = new List<string> { vArr[0].ToString(), string.Empty };
+                                vList = new List<string> { vArr[0].ToString().Trim('\"'), string.Empty };
                             }
                             else
                             {
-                                vList = new List<string> { vArr[0].ToString(), vArr[1].ToString() };
+                                vList = new List<string> { vArr[0].ToString().Trim('\"'), vArr[1].ToString().Trim('\"') };
                             }
-                            _dict.Add(item.Key, vList);
+                            _dict.Add(item.Key.Trim('\"'), vList);
                         }
                         catch
                         {
-                            _dict.Add(item.Key, new List<string> { item.Value.ToString(), string.Empty });
+                            _dict.Add(item.Key.Trim('\"'), new List<string> { item.Value.ToString().Trim('\"'), string.Empty });
                         }
                     }
                     if (_dict.Count == 0)
@@ -177,17 +180,18 @@ namespace SakuraTranslate
             //var endIndex = responseText.IndexOf(",", startIndex);
             //var translatedText = responseText.Substring(startIndex, endIndex - startIndex);
 
-            JObject jsonResponse = JObject.Parse(responseText);
+            var jsonResponse = JSON.Parse(responseText);
             string translatedText;
             if (IsOpenAIEndpoint(_modelType))
             {
-                translatedText = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString();
+                translatedText = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString().Trim('\"');
             }
             else
             {
-                translatedText = jsonResponse["content"]?.ToString();
+                translatedText = jsonResponse["content"]?.ToString().Trim('\"');
             }
 
+            translatedText = SakuraUtil.UnescapeTranslation(untranslatedText, translatedText);
             translatedText = SakuraUtil.FixTranslationEnd(untranslatedText, translatedText);
 
             // 提交翻译文本
@@ -380,7 +384,7 @@ namespace SakuraTranslate
             {
                 dictStr = string.Empty;
             }
-            if (_dictMode == "Full")
+            else if (_dictMode == "Full")
             {
                 dictStr = _fullDictStr;
             }
@@ -398,7 +402,7 @@ namespace SakuraTranslate
                 }
             }
 
-            if (_useDict == false)
+            if (_useDict == false || string.IsNullOrEmpty(dictStr))
             {
                 // 如果术语表为空，直接构建翻译指令
                 messages.Add(new PromptMessage

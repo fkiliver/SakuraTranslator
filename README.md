@@ -86,7 +86,7 @@ Sakura 0.10/1.0和GalTransl模型需要将`Endpoint`设置为chat completions ap
 ### 字典
 #### 字典配置项
 - `UseDict`默认为`False`，设置为`True`才会启用字典功能
-- `DictMode`默认为`Full`，为`Full`时传递整个字典，为`Partial`或其他时，传递当前翻译句子包含的字典部分
+- `DictMode`默认为`Partial`，为`Full`时传递整个字典，为`Partial`或其他时，传递当前翻译句子包含的字典部分
 - `Dict`默认为空字符串
 #### 字典配置（Dict）
 - 必须为空或合法的Json格式，解析失败将会视为空
