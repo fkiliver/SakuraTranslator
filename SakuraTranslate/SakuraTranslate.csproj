@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net3.5</TargetFramework>
+    <Version>0.3.6</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="XUnity.AutoTranslator.Plugin.Core" Version="4.7.0" />
+  </ItemGroup>
+
+</Project>
