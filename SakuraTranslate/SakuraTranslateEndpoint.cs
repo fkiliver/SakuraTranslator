@@ -188,7 +188,7 @@ namespace SakuraTranslate
                 translatedText = jsonResponse["content"]?.ToString().Trim('\"');
             }
 
-            translatedText = SakuraUtil.UnescapeTranslation(untranslatedText, translatedText);
+            translatedText = JsonHelper.Unescape(translatedText);
             translatedText = SakuraUtil.FixTranslationEnd(untranslatedText, translatedText);
 
             // 提交翻译文本

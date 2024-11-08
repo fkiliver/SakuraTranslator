@@ -15,23 +15,5 @@
 
             return translation;
         }
-
-        public static string UnescapeTranslation(string original, string translation)
-        {
-            if (!original.Contains("\\r"))
-            {
-                translation = translation.Replace("\\r", "\r");
-            }
-            if (!original.Contains("\\n"))
-            {
-                translation = translation.Replace("\\n", "\n");
-            }
-            if (!original.Contains("\\t"))
-            {
-                translation = translation.Replace("\\t", "\t");
-            }
-
-            return translation;
-        }
     }
 }
