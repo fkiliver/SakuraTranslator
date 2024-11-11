@@ -78,17 +78,19 @@ namespace SakuraTranslate
                             }
                             else if (vArr.Count == 1)
                             {
-                                vList = new List<string> { vArr[0].ToString().Trim('\"'), string.Empty };
+                                vList = new List<string> { JsonHelper.Unescape(vArr[0].ToString().Trim('\"')), string.Empty };
                             }
                             else
                             {
-                                vList = new List<string> { vArr[0].ToString().Trim('\"'), vArr[1].ToString().Trim('\"') };
+                                vList = new List<string> { JsonHelper.Unescape(vArr[0].ToString().Trim('\"')),
+                                    JsonHelper.Unescape(vArr[1].ToString().Trim('\"')) };
                             }
-                            _dict.Add(item.Key.Trim('\"'), vList);
+                            _dict.Add(JsonHelper.Unescape(item.Key.Trim('\"')), vList);
                         }
                         catch
                         {
-                            _dict.Add(item.Key.Trim('\"'), new List<string> { item.Value.ToString().Trim('\"'), string.Empty });
+                            _dict.Add(JsonHelper.Unescape(item.Key.Trim('\"')),
+                                new List<string> { JsonHelper.Unescape(item.Value.ToString().Trim('\"')), string.Empty });
                         }
                     }
                     if (_dict.Count == 0)
@@ -419,6 +421,8 @@ namespace SakuraTranslate
             }
 
             var messagesStr = SerializePromptMessages(messages);
+            //Console.WriteLine($"收到的line: {line}");
+            //Console.WriteLine($"提交的prompt: {messagesStr}");
 
             return $"{{" +
                    $"\"model\": \"sukinishiro\"," +
