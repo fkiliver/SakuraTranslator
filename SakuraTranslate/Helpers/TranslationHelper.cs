@@ -1,6 +1,6 @@
-﻿namespace SakuraTranslate
+﻿namespace SakuraTranslate.Helpers
 {
-    public static class SakuraUtil
+    public static class TranslationHelper
     {
         public static string FixTranslationEnd(string original, string translation)
         {

@@ -1,24 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using XUnity.AutoTranslator.Plugin.Core.Endpoints;
+﻿using SakuraTranslate.Models;
 
-namespace SakuraTranslate
+namespace SakuraTranslate.Helpers
 {
-    public partial class SakuraTranslateEndpoint : ITranslateEndpoint
+    public static class TranslateModelHelper
     {
-        private enum TranslationModel
-        {
-            SakuraV0_8,
-            SakuraV0_9,
-            SakuraV0_10,
-            SakuraV1_0,
-            Sakura32bV0_10,
-            GalTranslV2_6
-        }
-
-        private static TranslationModel GetTranslationModel(string modelName, string modelVersion)
+        public static TranslationModel GetTranslationModel(string modelName, string modelVersion)
         {
             switch (modelName.ToLower())
             {
@@ -48,7 +34,7 @@ namespace SakuraTranslate
             }
         }
 
-        private static bool IsOpenAIEndpoint(TranslationModel model)
+        public static bool IsOpenAIEndpoint(TranslationModel model)
         {
             return !(model == TranslationModel.SakuraV0_8 || model == TranslationModel.SakuraV0_9);
         }
