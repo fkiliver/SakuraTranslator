@@ -1,14 +1,12 @@
-﻿using SimpleJSON;
-using System.Collections.Generic;
-using System.Net;
-using System;
-using XUnity.AutoTranslator.Plugin.Core.Endpoints;
-using XUnity.AutoTranslator.Plugin.Core.Utilities;
+﻿using SakuraTranslate.Helpers;
+using SimpleJSON;
 using System.Collections;
 using System.IO;
+using System.Net;
 using System.Text;
-using SakuraTranslate.Models;
-using SakuraTranslate.Helpers;
+using XUnity.AutoTranslator.Plugin.Core.Endpoints;
+using XUnity.AutoTranslator.Plugin.Core.Utilities;
+using XUnity.Common.Logging;
 
 namespace SakuraTranslate
 {
@@ -19,7 +17,7 @@ namespace SakuraTranslate
             // 抽取未翻译文本
             var untranslatedText = context.UntranslatedText;
 
-            //Console.WriteLine($"提交的翻译文本: {untranslatedText}");
+            if (_debug) { XuaLogger.AutoTranslator.Debug($"Translate: untranslatedText: {untranslatedText}"); }
 
             // 构建请求JSON
             string json = MakeRequestJson(untranslatedText);
@@ -55,12 +53,21 @@ namespace SakuraTranslate
                 }
             }
 
+            if (_debug) { XuaLogger.AutoTranslator.Debug($"Translate: responseText: {responseText}"); }
+
             var jsonResponse = JSON.Parse(responseText);
             string translatedText;
             translatedText = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString().Trim('\"');
 
+            if (translatedText == null)
+            {
+                XuaLogger.AutoTranslator.Error($"Failed to parse response, jsonResponse: {jsonResponse}");
+            }
+
             translatedText = JsonHelper.Unescape(translatedText);
             translatedText = TranslationHelper.FixTranslationEnd(untranslatedText, translatedText);
+
+            if (_debug) { XuaLogger.AutoTranslator.Debug($"Translate: translatedText: {translatedText}"); }
 
             // 提交翻译文本
             context.Complete(translatedText);

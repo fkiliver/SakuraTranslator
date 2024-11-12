@@ -1,8 +1,5 @@
-﻿using SakuraTranslate.Helpers;
-using SakuraTranslate.Models;
-using System;
+﻿using SakuraTranslate.Models;
 using System.Collections.Generic;
-using System.Linq;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 
 namespace SakuraTranslate

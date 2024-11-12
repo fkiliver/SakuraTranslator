@@ -1,11 +1,11 @@
-﻿using SimpleJSON;
+﻿using SakuraTranslate.Helpers;
+using SakuraTranslate.Models;
+using SimpleJSON;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using System;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 using XUnity.AutoTranslator.Plugin.Core.Utilities;
-using SakuraTranslate.Helpers;
-using SakuraTranslate.Models;
 using XUnity.Common.Logging;
 
 namespace SakuraTranslate
