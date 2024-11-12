@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net3.5</TargetFramework>
-    <Version>0.3.6</Version>
+    <Version>0.3.7</Version>
   </PropertyGroup>
 
   <ItemGroup>

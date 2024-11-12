@@ -48,22 +48,10 @@ namespace SakuraTranslate
                             $"根据上述术语表的对应关系和备注，结合历史剧情和上下文，以流畅的风格将下面的文本从日文翻译成简体中文：{line}"
             });
 
-            var messagesStr = PromptHelper.SerializePromptMessages(messages);
+            var messagesStr = MakeRequestStr(messages);
             //Console.WriteLine($"提交的prompt: {messagesStr}");
 
-            return $"{{" +
-                   $"\"model\": \"sukinishiro\"," +
-                   $"\"messages\": " +
-                   messagesStr +
-                   $"," +
-                   $"\"temperature\": 0.2," +
-                   $"\"top_p\": 0.8," +
-                   $"\"max_tokens\": 512," +
-                   $"\"frequency_penalty\": 0.2," +
-                   $"\"do_sample\": true," +
-                   $"\"num_beams\": 1," +
-                   $"\"repetition_penalty\": 1.0" +
-                   $"}}";
+            return messagesStr;
         }
     }
 }

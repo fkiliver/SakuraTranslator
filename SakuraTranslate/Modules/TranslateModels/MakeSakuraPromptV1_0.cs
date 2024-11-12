@@ -60,23 +60,11 @@ namespace SakuraTranslate
                 });
             }
 
-            var messagesStr = PromptHelper.SerializePromptMessages(messages);
+            var messagesStr = MakeRequestStr(messages);
             //Console.WriteLine($"收到的line: {line}");
             //Console.WriteLine($"提交的prompt: {messagesStr}");
 
-            return $"{{" +
-                   $"\"model\": \"sukinishiro\"," +
-                   $"\"messages\": " +
-                   messagesStr +
-                   $"," +
-                   $"\"temperature\": 0.1," +
-                   $"\"top_p\": 0.3," +
-                   $"\"max_tokens\": 512," +
-                   $"\"frequency_penalty\": 0.2," +
-                   $"\"do_sample\": true," +
-                   $"\"num_beams\": 1," +
-                   $"\"repetition_penalty\": 1.0" +
-                   $"}}";
+            return messagesStr;
         }
     }
 }
