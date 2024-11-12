@@ -25,7 +25,7 @@ namespace SakuraTranslate
             }
             catch (Exception ex)
             {
-                XuaLogger.AutoTranslator.Warn(ex, $"Failed to parse max tokens mode: {context.GetOrCreateSetting<string>("Sakura", "MaxTokensMode", "Static")}, falling back to Static");
+                XuaLogger.AutoTranslator.Warn(ex, $"Initialize: Failed to parse max tokens mode: {context.GetOrCreateSetting<string>("Sakura", "MaxTokensMode", "Static")}, falling back to Static");
                 _maxTokensMode = MaxTokensMode.Static;
             }
             if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "StaticMaxTokens", "512"), out _staticMaxTokens) || _staticMaxTokens <= 0) { _staticMaxTokens = 512; }
@@ -39,13 +39,13 @@ namespace SakuraTranslate
             }
             catch (Exception ex)
             {
-                XuaLogger.AutoTranslator.Warn(ex, $"Failed to parse dict mode: {context.GetOrCreateSetting<string>("Sakura", "DictMode", "None")}, falling back to None");
+                XuaLogger.AutoTranslator.Warn(ex, $"Initialize: Failed to parse dict mode: {context.GetOrCreateSetting<string>("Sakura", "DictMode", "None")}, falling back to None");
                 _dictMode = DictMode.None;
             }
             var dictStr = context.GetOrCreateSetting<string>("Sakura", "Dict", string.Empty);
             if (string.IsNullOrEmpty(dictStr))
             {
-                XuaLogger.AutoTranslator.Warn("Dict is empty, setting DictMode to None");
+                XuaLogger.AutoTranslator.Warn("Initialize: Dict is empty, setting DictMode to None");
                 _dictMode = DictMode.None;
                 _fullDictStr = string.Empty;
             }
@@ -94,7 +94,7 @@ namespace SakuraTranslate
                 }
                 catch (Exception ex)
                 {
-                    XuaLogger.AutoTranslator.Warn(ex, $"Failed to parse dict string: {dictStr}");
+                    XuaLogger.AutoTranslator.Warn(ex, $"Initialize: Failed to parse dict string: {dictStr}");
                     _dictMode = DictMode.None;
                     _fullDictStr = string.Empty;
                 }
@@ -107,7 +107,7 @@ namespace SakuraTranslate
             }
             if (_maxConcurrency > ServicePointManager.DefaultConnectionLimit)
             {
-                XuaLogger.AutoTranslator.Info($"Setting ServicePointManager.DefaultConnectionLimit to {_maxConcurrency}");
+                XuaLogger.AutoTranslator.Info($"Initialize: Setting ServicePointManager.DefaultConnectionLimit to {_maxConcurrency}");
                 ServicePointManager.DefaultConnectionLimit = _maxConcurrency;
             }
             if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "Debug", "False"), out _debug)) { _debug = false; }

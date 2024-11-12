@@ -19,7 +19,7 @@ namespace SakuraTranslate
                 $"{{\"model\":\"sukinishiro\"," +
                 $"\"messages\":[{sb}]," +
                 $"\"temperature\":{temperature}," +
-                $"\"top_p\":{topP}" +
+                $"\"top_p\":{topP}," +
                 $"\"max_tokens\":{maxTokens}," +
                 $"\"frequency_penalty\":{frequencyPenalty}," +
                 $"\"seed\":-1," +

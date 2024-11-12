@@ -66,14 +66,14 @@ namespace SakuraTranslate
 
                 if (translatedText == null)
                 {
-                    XuaLogger.AutoTranslator.Error($"Failed to parse response, jsonResponse: {jsonResponse}");
+                    XuaLogger.AutoTranslator.Error($"Translate: Failed to parse response, jsonResponse: {jsonResponse}");
                 }
 
                 if (_fixDegeneration && completionTokens == GetMaxTokens(untranslatedText))
                 {
                     if (retryCount < DEGENERATION_MAX_RETRIES)
                     {
-                        XuaLogger.AutoTranslator.Warn($"Detected degeneration, retry: {retryCount + 1}/{DEGENERATION_MAX_RETRIES}, " +
+                        XuaLogger.AutoTranslator.Warn($"Translate: Detected degeneration, retry: {retryCount + 1}/{DEGENERATION_MAX_RETRIES}, " +
                             $"completionTokens: {completionTokens}, maxTokens: {GetMaxTokens(untranslatedText)}, untranslatedText: {untranslatedText}");
                         frequencyPenalty += 0.2;
                         retryCount++;
@@ -81,7 +81,7 @@ namespace SakuraTranslate
                     }
                     else
                     {
-                        XuaLogger.AutoTranslator.Warn($"Failed to fix degeneration after {retryCount} retries, untranslatedText: {untranslatedText}");
+                        XuaLogger.AutoTranslator.Warn($"Translate: Failed to fix degeneration after {retryCount} retries, untranslatedText: {untranslatedText}");
                         break;
                     }
                 }

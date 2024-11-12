@@ -35,11 +35,11 @@ namespace SakuraTranslate
             {
                 dictStr = null;
             }
-            if (_dictMode == DictMode.Full)
+            else if (_dictMode == DictMode.Full)
             {
                 dictStr = _fullDictStr;
             }
-            else if (_dictMode == DictMode.MatchOriginal)
+            else if (_dictMode == DictMode.MatchOriginalText)
             {
                 var usedDict = _dict.Where(x => originalText.Contains(x.Key));
                 dictStr = usedDict.Any() ? GetDictStr(usedDict) : null;

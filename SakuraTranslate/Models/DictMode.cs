@@ -4,6 +4,6 @@
     {
         None,
         Full,
-        MatchOriginal
+        MatchOriginalText
     }
 }
