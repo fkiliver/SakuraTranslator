@@ -6,6 +6,9 @@ namespace SakuraTranslate
 {
     public partial class SakuraTranslateEndpoint : ITranslateEndpoint
     {
+        // constants
+        private const int DEGENERATION_MAX_RETRIES = 1;
+
         // params
         private string _endpoint;
         private string _modelName;
@@ -15,6 +18,7 @@ namespace SakuraTranslate
         private double _dynamicMaxTokensMultiplier;
         private DictMode _dictMode;
         private Dictionary<string, List<string>> _dict;
+        private bool _fixDegeneration;
         private int _maxConcurrency;
         private bool _debug;
 

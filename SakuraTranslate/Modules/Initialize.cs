@@ -100,6 +100,7 @@ namespace SakuraTranslate
                 }
             }
             #endregion
+            if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "FixDegeneration", "False"), out _fixDegeneration)) { _fixDegeneration = true; }
             if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "MaxConcurrency", "1"), out _maxConcurrency))
             {
                 _maxConcurrency = 1;
