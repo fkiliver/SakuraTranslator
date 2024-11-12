@@ -6,7 +6,7 @@ namespace SakuraTranslate
 {
     public partial class SakuraTranslateEndpoint : ITranslateEndpoint
     {
-        private string MakeSakuraPromptV1_0(string line, double frequencyPenalty = 0)
+        private string MakeSakuraPromptV1_0(string originalText, double frequencyPenalty = 0)
         {
             var messages = new List<PromptMessage>
             {
@@ -17,7 +17,7 @@ namespace SakuraTranslate
                 }
             };
 
-            string dictStr = GetDictStr(line);
+            string dictStr = GetDictStr(originalText);
 
             if (_dictMode == DictMode.None || string.IsNullOrEmpty(dictStr))
             {
@@ -25,7 +25,7 @@ namespace SakuraTranslate
                 messages.Add(new PromptMessage
                 {
                     Role = "user",
-                    Content = $"将下面的日文文本翻译成中文：{line}"
+                    Content = $"将下面的日文文本翻译成中文：{originalText}"
                 });
             }
             else
@@ -34,11 +34,11 @@ namespace SakuraTranslate
                 {
                     Role = "user",
                     Content = $"根据以下术语表（可以为空）：\n{dictStr}\n" +
-                          $"将下面的日文文本根据对应关系和备注翻译成中文：{line}"
+                          $"将下面的日文文本根据对应关系和备注翻译成中文：{originalText}"
                 });
             }
 
-            return MakeRequestStr(messages, 0.1, 0.3, frequencyPenalty);
+            return MakeRequestStr(messages, GetMaxTokens(originalText), 0.1, 0.3, frequencyPenalty);
         }
     }
 }

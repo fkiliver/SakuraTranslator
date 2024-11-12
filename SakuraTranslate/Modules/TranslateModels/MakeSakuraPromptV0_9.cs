@@ -6,7 +6,7 @@ namespace SakuraTranslate
 {
     public partial class SakuraTranslateEndpoint : ITranslateEndpoint
     {
-        private string MakeSakuraPromptV0_9(string line, double frequencyPenalty = 0)
+        private string MakeSakuraPromptV0_9(string originalText, double frequencyPenalty = 0)
         {
             return MakeRequestStr(new List<PromptMessage>
             {
@@ -18,9 +18,9 @@ namespace SakuraTranslate
                 new PromptMessage
                 {
                     Role = "user",
-                    Content = $"将下面的日文文本翻译成中文：{line}"
+                    Content = $"将下面的日文文本翻译成中文：{originalText}"
                 }
-            }, 0.1, 0.3, frequencyPenalty);
+            }, GetMaxTokens(originalText), 0.1, 0.3, frequencyPenalty);
         }
     }
 }
