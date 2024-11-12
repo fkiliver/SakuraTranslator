@@ -8,7 +8,7 @@ namespace SakuraTranslate
 {
     public partial class SakuraTranslateEndpoint : ITranslateEndpoint
     {
-        public static string GetDictStr(IEnumerable<KeyValuePair<string, List<string>>> kvPairs)
+        private static string GetDictStr(IEnumerable<KeyValuePair<string, List<string>>> kvPairs)
         {
             List<string> dictList = new List<string>();
             foreach (var entry in kvPairs)
@@ -28,7 +28,7 @@ namespace SakuraTranslate
             return string.Join("\n", dictList.ToArray());
         }
 
-        public string GetDictStr(string originalText)
+        private string GetDictStr(string originalText)
         {
             string dictStr;
             if (_dictMode == DictMode.None)

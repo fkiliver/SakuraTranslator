@@ -39,7 +39,7 @@ namespace SakuraTranslate
             }
             else if (_maxTokensMode == MaxTokensMode.Dynamic)
             {
-                return (int)Math.Ceiling(originalText.Length * _dynamicMaxTokensMultiplier);
+                return Math.Max((int)Math.Ceiling(originalText.Length * _dynamicMaxTokensMultiplier), MIN_MAX_TOKENS);
             }
             else
             {

@@ -8,6 +8,7 @@ namespace SakuraTranslate
     {
         // constants
         private const int DEGENERATION_MAX_RETRIES = 1;
+        private const int MIN_MAX_TOKENS = 10;
 
         // params
         private string _endpoint;
