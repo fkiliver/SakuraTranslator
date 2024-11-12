@@ -54,7 +54,7 @@ namespace SakuraTranslate
                     Content = $"根据以下术语表：\n{dictStr}\n将下面的日文文本根据上述术语表的对应关系和注释翻译成中文：{line}"
                 });
             }
-            messagesStr = MakeRequestStr(messages);
+            messagesStr = MakeRequestStr(messages, 0.1, 0.3, frequencyPenalty);
             return messagesStr;
         }
     }

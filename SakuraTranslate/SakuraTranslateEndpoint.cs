@@ -19,13 +19,16 @@ namespace SakuraTranslate
         private string _endpoint;
         private string _modelName;
         private string _modelVersion;
-        private TranslationModel _modelType;
-        private int _maxConcurrency;
-        private bool _useDict;
-        private string _dictMode;
+        private MaxTokensMode _maxTokensMode;
+        private int _staticMaxTokens;
+        private double _dynamicMaxTokensMultiplier;
+        private DictMode _dictMode;
         private Dictionary<string, List<string>> _dict;
+        private int _maxConcurrency;
+        private bool _debug;
 
         // local var
+        private TranslationModel _modelType;
         private string _fullDictStr;
 
         public string Id => "SakuraTranslate";

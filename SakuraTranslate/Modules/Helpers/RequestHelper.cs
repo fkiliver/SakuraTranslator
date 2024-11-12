@@ -13,7 +13,7 @@ namespace SakuraTranslate
 {
     public partial class SakuraTranslateEndpoint : ITranslateEndpoint
     {
-        private string MakeRequestStr(List<PromptMessage> prompts, double frequencyPenalty = 0)
+        private string MakeRequestStr(List<PromptMessage> prompts, double temperature, double topP, double frequencyPenalty = 0)
         {
             var sb = new StringBuilder();
             prompts.ForEach(p => { sb.Append($"{{\"role\":\"{JsonHelper.Escape(p.Role)}\",\"content\":\"{JsonHelper.Escape(p.Content)}\"}},"); });
@@ -25,8 +25,8 @@ namespace SakuraTranslate
             var retStr =
                 $"{{\"model\":\"sukinishiro\"," +
                 $"\"messages\":[{sb}]," +
-                $"\"temperature\":{_temperature}," +
-                $"\"top_p\":0.3" +
+                $"\"temperature\":{temperature}," +
+                $"\"top_p\":{topP}" +
                 $"\"max_tokens\":{maxTokens}," +
                 $"\"frequency_penalty\":{frequencyPenalty}," +
                 $"\"seed\":-1," +
