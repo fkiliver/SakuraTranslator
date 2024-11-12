@@ -25,7 +25,7 @@ namespace SakuraTranslate
             while (true)
             {
                 // 构建请求JSON
-                string json = MakeRequestJson(untranslatedText);
+                string json = MakeRequestJson(untranslatedText, frequencyPenalty);
                 var dataBytes = Encoding.UTF8.GetBytes(json);
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_endpoint);

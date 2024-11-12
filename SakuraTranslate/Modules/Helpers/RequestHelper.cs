@@ -47,18 +47,18 @@ namespace SakuraTranslate
             }
         }
 
-        private string MakeRequestJson(string line)
+        private string MakeRequestJson(string line, double frequencyPenalty = 0)
         {
             switch (_modelType)
             {
                 case TranslationModel.SakuraV0_9:
-                    return MakeSakuraPromptV0_9(line);
+                    return MakeSakuraPromptV0_9(line, frequencyPenalty);
                 case TranslationModel.SakuraV0_10:
-                    return MakeSakuraPromptV0_10(line);
+                    return MakeSakuraPromptV0_10(line, frequencyPenalty);
                 case TranslationModel.SakuraV1_0:
-                    return MakeSakuraPromptV1_0(line);
+                    return MakeSakuraPromptV1_0(line, frequencyPenalty);
                 case TranslationModel.GalTranslV2_6:
-                    return MakeGalTranslPromptV2_6(line);
+                    return MakeGalTranslPromptV2_6(line, frequencyPenalty);
                 default:
                     throw new Exception("Invalid model type.");
             }
