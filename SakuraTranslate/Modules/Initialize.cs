@@ -28,8 +28,8 @@ namespace SakuraTranslate
                 XuaLogger.AutoTranslator.Warn(ex, $"Initialize: Failed to parse max tokens mode: {context.GetOrCreateSetting<string>("Sakura", "MaxTokensMode", "Static")}, falling back to Static");
                 _maxTokensMode = MaxTokensMode.Static;
             }
-            if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "StaticMaxTokens", "512"), out _staticMaxTokens) || _staticMaxTokens <= 0) { _staticMaxTokens = 512; }
-            if (!double.TryParse(context.GetOrCreateSetting<string>("Sakura", "DynamicMaxTokensMultiplier", "1.5"), out _dynamicMaxTokensMultiplier) || _dynamicMaxTokensMultiplier <= 0) { _dynamicMaxTokensMultiplier = 1.0; }
+            if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "StaticMaxTokens", "512"), out _staticMaxTokens)) { _staticMaxTokens = 512; }
+            if (!double.TryParse(context.GetOrCreateSetting<string>("Sakura", "DynamicMaxTokensMultiplier", "1.5"), out _dynamicMaxTokensMultiplier)) { _dynamicMaxTokensMultiplier = 1.5; }
             #endregion
             // init dict
             #region init dict
@@ -100,11 +100,8 @@ namespace SakuraTranslate
                 }
             }
             #endregion
-            if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "FixDegeneration", "False"), out _fixDegeneration)) { _fixDegeneration = true; }
-            if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "MaxConcurrency", "1"), out _maxConcurrency))
-            {
-                _maxConcurrency = 1;
-            }
+            if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "FixDegeneration", "False"), out _fixDegeneration)) { _fixDegeneration = false; }
+            if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "MaxConcurrency", "1"), out _maxConcurrency)) { _maxConcurrency = 1; }
             if (_maxConcurrency > ServicePointManager.DefaultConnectionLimit)
             {
                 XuaLogger.AutoTranslator.Info($"Initialize: Setting ServicePointManager.DefaultConnectionLimit to {_maxConcurrency}");
