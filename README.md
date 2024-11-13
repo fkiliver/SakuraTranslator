@@ -6,11 +6,11 @@
 
 # 介绍
 这是一个基于XUnity.AutoTranslator和Sakura模型的Unity游戏本地翻译器,能够提供高质量离线日文翻译  
-建议使用[Galtransl-v2.6翻译模型](https://huggingface.co/SakuraLLM/GalTransl-7B-v2.6)，当前支持版本为Sakura v0.8/v0.9/v0.10/v1.0,GalTrans2.6
+建议使用[Galtransl-v2.6翻译模型](https://huggingface.co/SakuraLLM/GalTransl-7B-v2.6)，当前支持版本为Sakura v0.9/v0.10/v1.0,GalTrans2.6
 
 ## TODO
-- [ ] 添加退化检测（搁置，较新的模型基本不需要）
 - [ ] 添加历史上文（搁置，难以将对话文本与ui文本区分，需要更好的规则）
+- [x] 添加退化检测
 - [x] 重新整理对不同模型的支持
 
 
@@ -58,45 +58,58 @@ OverrideFontTextMeshPro= arialuni_sdf_u2018 ##或arialuni_sdf_u2019
 Endpoint=http://127.0.0.1:8080/v1/chat/completions
 ModelName=Sakura
 ModelVersion=1.0
-MaxConcurrency=2
-UseDict=True
-DictMode=Partial
-Dict={"アイリス":["艾莉斯","女"]}
+MaxTokensMode=Dynamic
+StaticMaxTokens=512
+DynamicMaxTokensMultiplier=1.5
+DictMode=MatchOriginalText
+Dict={"想太":["想太","男主人公"],"ダイヤ":["戴亚","女"]}
+FixDegeneration=True
+MaxConcurrency=1
+Debug=False
 ```
 
 ### 支持的模型及对应关系
-将原`ApiType`拆成`ModelName`和`ModelVersion`，对应关系如下表，其中`*`表示没有匹配时的默认值
+对应参数为`ModelName`和`ModelVersion`，对应关系如下表，其中`*`表示没有匹配时的默认值
+
 | ModelName  | ModelVersion | TranslationModel       |
 |------------|--------------|------------------------|
-| Sakura     | 0.8          | Sakura 0.8             |
-| Sakura     | 0.9          | Sakura 7B/14B/32B 0.9  |
+| Sakura     | 0.9          | Sakura 0.9             |
 | Sakura     | 0.10         | Sakura 0.10            |
 | Sakura     | 1.0          | Sakura 1.0             |
 | Sakura     | *            | Sakura 1.0 (默认)      |
-| Sakura32B  | 0.10         | Sakura32B 0.10         |
-| Sakura32B  | *            | Sakura32B 0.10 (默认)  |
 | GalTransl  | 2.6          | GalTransl 2.6          |
 | GalTransl  | *            | GalTransl 2.6 (默认)   |
 | *          | *            | Sakura 1.0 (默认)      |
 
-模型相关默认值设置为Sakura 1.0，注意Sakura 7B/14B/32B 0.9系列模型需将`ModelName`设置为`Sakura`  
-其中Sakura 0.8/0.9模型需要将`Endpoint`设置为completion api（例：`http://127.0.0.1:8080/completion`）  
-Sakura 0.10/1.0和GalTransl模型需要将`Endpoint`设置为chat completions api（例：`http://127.0.0.1:8080/v1/chat/completions`）  
+模型默认值为Sakura 1.0  
+需要将`Endpoint`设置为chat completions api（例：`http://127.0.0.1:8080/v1/chat/completions`）  
+
+### MaxTokens模式及退化检测
+- `MaxTokensMode`
+  - `Static`（默认）：使用`StaticMaxTokens`的值作为发送给llama.cpp的`max_tokens`
+  - `Dynamic`：使用原文的字符数乘以`DynamicMaxTokensMultiplier`向上取整作为发送给llama.cpp的`max_tokens`，最小`max_tokens`为`10`
+  - 设置为`Dynamic`有助于在模型退化时减少检测时间
+- `StaticMaxTokens`：静态MaxTokens值，默认`512`
+- `DynamicMaxTokensMultiplier`：动态MaxTokens乘以原文字符数的倍数，默认`1.5`
+- `FixDegeneration`
+  - `False`（默认）：关闭退化检测功能
+  - `True`：开启退化检测功能，当模型生成的token数等于传递给llama.cpp的`max_tokens`时，将`frequency_penalty`增加至`0.2`重新生成，若仍然失败则使用最后获取的结果
 
 ### 字典
 #### 字典配置项
-- `UseDict`默认为`False`，设置为`True`才会启用字典功能
-- `DictMode`默认为`Partial`，为`Full`时传递整个字典，为`Partial`或其他时，传递当前翻译句子包含的字典部分
-- `Dict`默认为空字符串
+- `DictMode`
+  - `None`（默认）：关闭字典功能（注：Sakura 0.9不支持字典，启用字典功能时也不会传递字典）
+  - `Full`：传递整个字典
+  - `MatchOriginalText`：传递当前翻译句子包含的字典部分
 #### 字典配置（Dict）
-- 必须为空或合法的Json格式，解析失败将会视为空
+- `Dict`默认为空字符串，必须为空或合法的Json格式，解析失败将会视为空
 - 字典格式`{"src":["dst","info"]}`，发给sakura的字典为`src->dst #info`
 - 其中`info`没有可以写成`{"src":["dst"]}`或者`{"src":"dst"}`，此时发给sakura的字典为`src->dst`
 - 示例：`{"たちばな":"橘","橘":["橘"],"あやの":["绫乃","女"],"綾乃":["绫乃","女"]}`
 
-### 其他问题
-- `frequency_penalty`目前设置为`0.2`，暂时没有加入退化检测
-- 可以使用并发参数MaxConcurrency，单卡多线程总体翻译速度比单线程高（3090，1线程约50t/s，5线程约5x35t/s）    
+### 并发设置
+- `MaxConcurrency`：同时发送的翻译请求数，默认为`1`
+- 单卡多线程总体翻译速度一般比单线程高，llama.cpp需要设置`-np`参数（一般认为Intel显卡除外，可使用llama-batched-bench测试）
 
 
 ## 启动游戏
