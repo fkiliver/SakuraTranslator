@@ -53,7 +53,23 @@ if __name__ == '__main__':
 ```python
 from llama_cpp import Llama
 llm = Llama("sakura-7b-qwen2.5-v1.0-q6k.gguf", n_gpu_layers=-1, verbose=False)
-system_prompt = "你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，不擅自添加原文中没有的代词。"
+default_system_prompt = "你是一个轻小说翻译模型，可以流畅通顺地以日本轻小说的风格将日文翻译成简体中文，并联系上下文正确使用人称代词，不擅自添加原文中没有的代词。"
+
+history = []
+def get_response(system_prompt, user_prompt, history_num = 3):
+    global history
+    messages = [{"role": "system", "content": system_prompt}]
+    if history_num > 0:
+        if len(history) > history_num:
+            history = history[-history_num:]
+        if len(history) > 0:
+            messages.append({"role": "assistant", "content": "\n".join(history)})
+    messages.append({"role": "user", "content": user_prompt})
+    res = llm.create_chat_completion(messages=messages, temperature=0.1, top_p=0.3, repeat_penalty=1, max_tokens=512, frequency_penalty=0.2)
+    res = res["choices"][0]["message"]["content"]
+    if history_num > 0:
+        history.append(res)
+    return res
 
 def translate(text: str, gpt_dicts: list[dict] = []) -> str:
     """
@@ -79,18 +95,5 @@ def translate(text: str, gpt_dicts: list[dict] = []) -> str:
                 single = f"{src}->{dst}\n"
             user_prompt += single
         user_prompt += "将下面的日文文本根据对应关系和备注翻译成中文：" + text
-    res = llm.create_chat_completion(messages=[
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt}
-    ], temperature=0.1, top_p=0.3, repeat_penalty=1, max_tokens=512, frequency_penalty=0.2)
-    return res["choices"][0]["message"]["content"]
-
-if __name__ == "__main__":
-    while True:
-        raw = input("待翻译语句: ")
-        dicts = [{
-            "src": "一ノ瀬　雫",
-            "dst": "一之濑-雫",
-        }]
-        print("翻译结果:", translate(raw, dicts))
+    return get_response(default_system_prompt, user_prompt)
 ```
