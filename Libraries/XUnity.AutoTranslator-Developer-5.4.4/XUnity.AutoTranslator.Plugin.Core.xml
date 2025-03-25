@@ -1,0 +1,1901 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>XUnity.AutoTranslator.Plugin.Core</name>
+    </assembly>
+    <members>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedContextExtensions">
+            <summary>
+            Extension methods to calculate preferred resources paths for redirected resources.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedContextExtensions.GetPreferredFilePath(XUnity.ResourceRedirector.IAssetOrResourceLoadedContext,UnityEngine.Object,System.String)">
+            <summary>
+            Gets the default resource and preferred path to store the redirected resource at.
+            </summary>
+            <param name="context"></param>
+            <param name="asset"></param>
+            <param name="extension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedContextExtensions.GetPreferredFilePath(XUnity.ResourceRedirector.IAssetOrResourceLoadedContext,System.String,UnityEngine.Object,System.String)">
+            <summary>
+            Gets the default resource and preferred path to store the redirected resource at.
+            </summary>
+            <param name="context"></param>
+            <param name="parentDirectory"></param>
+            <param name="asset"></param>
+            <param name="extension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedContextExtensions.GetPreferredFilePathWithCustomFileName(XUnity.ResourceRedirector.IAssetOrResourceLoadedContext,UnityEngine.Object,System.String)">
+            <summary>
+            Gets the preferred path to store the resource at if a specific file name is required.
+            </summary>
+            <param name="context"></param>
+            <param name="asset"></param>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedContextExtensions.GetPreferredFilePathWithCustomFileName(XUnity.ResourceRedirector.IAssetOrResourceLoadedContext,System.String,UnityEngine.Object,System.String)">
+            <summary>
+            Gets the preferred path to store the resource at if a specific file name is required.
+            </summary>
+            <param name="context"></param>
+            <param name="parentDirectory"></param>
+            <param name="asset"></param>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBase`1">
+            <summary>
+            Base implementation of resource redirect handler that takes care of the plumming for a
+            resource redirector that is interested in either updating or dumping redirected resources.
+            </summary>
+            <typeparam name="TAsset">The type of asset being redirected.</typeparam>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBase`1.#ctor">
+            <summary>
+            Constructs the resource redirection handler.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBase`1.CheckDirectory">
+            <summary>
+            Gets or sets a boolean indicating if the calculated modification path should be checked
+            for a file or directory.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBase`1.IsDumpingEnabled">
+            <summary>
+            Gets a bool indicating if resource dumping is enabled in the Auto Translator.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBase`1.ReplaceOrUpdateAsset(System.String,`0@,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Method invoked when an asset should be updated or replaced.
+            </summary>
+            <param name="calculatedModificationPath">This is the modification path calculated in the CalculateModificationFilePath method.</param>
+            <param name="asset">The asset to be updated or replaced.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A bool indicating if the event should be considered handled.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBase`1.DumpAsset(System.String,`0,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Method invoked when an asset should be dumped.
+            </summary>
+            <param name="calculatedModificationPath">This is the modification path calculated in the CalculateModificationFilePath method.</param>
+            <param name="asset">The asset to be updated or replaced.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A bool indicating if the event should be considered handled.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBase`1.CalculateModificationFilePath(`0,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Method invoked when a new resource event is fired to calculate a unique path for the resource.
+            </summary>
+            <param name="asset">The asset to be updated or replaced.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A string uniquely representing a path for the redirected resource.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBase`1.ShouldHandleAsset(`0,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Method to be invoked to indicate if the asset should be handled or not.
+            </summary>
+            <param name="asset">The asset to be updated or replaced.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A bool indicating if the asset should be handled.</returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBaseV2`1">
+            <summary>
+            Base implementation of resource redirect handler that takes care of the plumbing for a
+            resource redirector that is interested in either updating or dumping redirected resources.
+            </summary>
+            <typeparam name="TAsset">The type of asset being redirected.</typeparam>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBaseV2`1.#ctor">
+            <summary>
+            Constructs the resource redirection handler.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBaseV2`1.CheckDirectory">
+            <summary>
+            Gets or sets a boolean indicating if the calculated modification path should be checked
+            for a file or directory.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBaseV2`1.ReplaceOrUpdateAsset(System.String,`0@,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Method invoked when an asset should be updated or replaced.
+            </summary>
+            <param name="calculatedModificationPath">This is the modification path calculated in the CalculateModificationFilePath method.</param>
+            <param name="asset">The asset to be updated or replaced.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A bool indicating if the event should be considered handled.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBaseV2`1.DumpAsset(System.String,`0,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Method invoked when an asset should be dumped.
+            </summary>
+            <param name="calculatedModificationPath">This is the modification path calculated in the CalculateModificationFilePath method.</param>
+            <param name="asset">The asset to be updated or replaced.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A bool indicating if the event should be considered handled.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBaseV2`1.CalculateModificationFilePath(`0,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Method invoked when a new resource event is fired to calculate a unique path for the resource.
+            </summary>
+            <param name="asset">The asset to be updated or replaced.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A string uniquely representing a path for the redirected resource.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.AssetLoadedHandlerBaseV2`1.ShouldHandleAsset(`0,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Method to be invoked to indicate if the asset should be handled or not.
+            </summary>
+            <param name="asset">The asset to be updated or replaced.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A bool indicating if the asset should be handled.</returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedDirectory">
+            <summary>
+            Simple facade for accessing files in the redirected directory, even if they are contained in a zip folder.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedDirectory.GetFilesInDirectory(System.String,System.String[])">
+            <summary>
+            Gets all the files in the directory. May return multiple files with same name due to zip files. Unzipped files will be returned first.
+            </summary>
+            <param name="path">A standard file path, that MUST be point to a place in the redirected resource directory.</param>
+            <param name="extensions">The extensions of the files to return. None if all files should be returned.</param>
+            <returns>The redirected resources.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedDirectory.GetFile(System.String)">
+            <summary>
+            Gets the file at the specified path. May return multiple files due to zip files. Unzipped files will be returned first.
+            </summary>
+            <param name="path">A standard file path, that MUST be point to a place in the redirected resource directory.</param>
+            <returns>The redirected resources.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedDirectory.DirectoryExists(System.String)">
+            <summary>
+            Checks if the directory exists in either the file system or in a zip file.
+            </summary>
+            <param name="path">A standard file path, that MUST be point to a place in the redirected resource directory.</param>
+            <returns>A bool indicating if the directory exists.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedDirectory.FileExists(System.String)">
+            <summary>
+            Checks if the file exists in either the file system or in a zip file.
+            </summary>
+            <param name="path">A standard file path, that MUST be point to a place in the redirected resource directory.</param>
+            <returns>A bool indicating if the file exists.</returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedResource">
+            <summary>
+            Representation of a redirected resource that has a stream of data that can be opened.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedResource.IsZipped">
+            <summary>
+            Gets a bool indicating if this redirected resource was zipped.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedResource.ContainerFile">
+            <summary>
+            If the redirected resource was zipped, this is the container file.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedResource.FullName">
+            <summary>
+            Gets the full name of the file.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.RedirectedResource.OpenStream">
+            <summary>
+            Opens a stream to the redirected resource.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAndEncoding">
+            <summary>
+            A text and the encoding it is supposed to be stored with.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAndEncoding.#ctor(System.String,System.Text.Encoding)">
+            <summary>
+            Constructs a new text with encoding.
+            </summary>
+            <param name="text"></param>
+            <param name="encoding"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAndEncoding.#ctor(System.Byte[],System.Text.Encoding)">
+            <summary>
+            Constructs a text with encoding from a byte array.
+            </summary>
+            <param name="bytes"></param>
+            <param name="encoding"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAndEncoding.#ctor(System.Byte[])">
+            <summary>
+            Constructs a TextAndEncoding representing a binary piece of data with
+            no encoding.
+            </summary>
+            <param name="bytes"></param>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAndEncoding.Text">
+            <summary>
+            Gets the text.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAndEncoding.Bytes">
+            <summary>
+            Gets the bytes.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAndEncoding.Encoding">
+            <summary>
+            Gets the encoding the text is supposed to be stored with.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAssetLoadedHandlerBase">
+            <summary>
+            Base class for handling text assets. Specifically made for TextAsset because that resource
+            class can be difficult to work with since it only has property getters and no setters.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAssetLoadedHandlerBase.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAssetLoadedHandlerBase.TranslateTextAsset(System.String,UnityEngine.TextAsset,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Primary method that is supposed to perform the translation of the text asset. Instead of actually modifying the
+            TextAsset, the text and it's suggested encoding should be returned from the method and the auto translator
+            will ensure that this text/data is returned when requested by the game. Return null to not handle.
+            </summary>
+            <param name="calculatedModificationPath">This is the modification path calculated in the CalculateModificationFilePath method.</param>
+            <param name="asset">The text asset with the original content.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A TextAndEncoding indicating the text that should replace with TextAsset. Return null to not handle.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AssetRedirection.TextAssetLoadedHandlerBase.ReplaceOrUpdateAsset(System.String,UnityEngine.TextAsset@,XUnity.ResourceRedirector.IAssetOrResourceLoadedContext)">
+            <summary>
+            Method invoked when an asset should be updated or replaced.
+            </summary>
+            <param name="calculatedModificationPath">This is the modification path calculated in the CalculateModificationFilePath method.</param>
+            <param name="asset">The asset to be updated or replaced.</param>
+            <param name="context">This is the context containing all relevant information for the resource redirection event.</param>
+            <returns>A bool indicating if the event should be considered handled.</returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin">
+            <summary>
+            Main plugin class for the AutoTranslator.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin.Current">
+            <summary>
+            Allow the instance to be accessed statically, as only one will exist.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin._textsToCopyToClipboardOrdered">
+            <summary>
+            Keeps track of things to copy to clipboard.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin._immediatelyTranslating">
+            <summary>
+            Texts currently being scheduled for translation by 'immediate' components.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin.Initialize">
+            <summary>
+            Initialized the plugin.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin.LoadTranslations(System.Boolean)">
+            <summary>
+            Loads the translations found in Translation.{lang}.txt
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin.SetText(System.Object,System.String,System.Boolean,System.String,XUnity.AutoTranslator.Plugin.Core.TextTranslationInfo)">
+            <summary>
+            Sets the text of a UI  text, while ensuring this will not fire a text changed event.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin.TranslateOrQueueWebJobImmediate(System.Object,System.String,System.Int32,XUnity.AutoTranslator.Plugin.Core.TextTranslationInfo,System.Boolean,System.Boolean,System.Boolean,System.Boolean,XUnity.AutoTranslator.Plugin.Core.IReadOnlyTextTranslationCache,XUnity.AutoTranslator.Plugin.Core.Endpoints.UntranslatedTextInfo,XUnity.AutoTranslator.Plugin.Core.ParserTranslationContext)">
+            <summary>
+            Translates the string of a UI  text or queues it up to be translated
+            by the HTTP translation service.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin.WaitForTextStablization(System.Object,XUnity.AutoTranslator.Plugin.Core.TextTranslationInfo,System.Single,System.Int32,System.Int32,System.Action{System.String},System.Action)">
+            <summary>
+            Utility method that allows me to wait to call an action, until
+            the text has stopped changing. This is important for 'story'
+            mode text, which 'scrolls' into place slowly.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin.WaitForTextStablization(XUnity.AutoTranslator.Plugin.Core.UntranslatedText,System.Single,System.Action,System.Action)">
+            <summary>
+            Utility method that allows waiating to call an action, until
+            the text has stopped changing. This is important for 'story'
+            mode text, which 'scrolls' into place slowly. This version is
+            for global text, where the component cannot tell us if the text
+            has changed itself.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin.DisableAutoTranslator">
+            <summary>
+            Temporarily disables the Auto Translator functionality.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.AutoTranslationPlugin.EnableAutoTranslator">
+            <summary>
+            Re-enables the Auto Translator functionality after
+            having disabled it thorugh DisableAutoTranslator
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AutoTranslator">
+            <summary>
+            Accessor for the public API surface to interact with translations provided by the Auto Translator Plugin.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AutoTranslator.Default">
+            <summary>
+            Gets the translator instance.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AutoTranslatorSettings">
+            <summary>
+            Class representing publicly available settings of the plugin.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AutoTranslatorSettings.UserAgent">
+            <summary>
+            Gets the user-supplied user agent.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AutoTranslatorSettings.SourceLanguage">
+            <summary>
+            Gets the configured source language.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AutoTranslatorSettings.DestinationLanguage">
+            <summary>
+            Gets the configured destination language.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AutoTranslatorSettings.IsDumpingRedirectedResourcesEnabled">
+            <summary>
+            Gets a bool indicating if redirected resource dumping is enabled.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AutoTranslatorSettings.DefaultRedirectedResourcePath">
+            <summary>
+            Gets the root of the default path to output redirected  resources to.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.AutoTranslatorState">
+            <summary>
+            Class representing publicly available state of the plugin.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.AutoTranslatorState.TranslationCount">
+            <summary>
+            Gets the number of translation requests that has been completed.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.ComponentTranslationContext">
+            <summary>
+            Callback-context object used when this plugin intends to attempt a translation on a component.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.ComponentTranslationContext.Component">
+            <summary>
+            Gets the text component in question. Often unity-related object such as Text or TextMeshProUGUI.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.ComponentTranslationContext.OriginalText">
+            <summary>
+            Gets the original text that was in the text component (as retrieved through the components text property).
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.ComponentTranslationContext.OverriddenTranslatedText">
+            <summary>
+            Gets the overriden translated text if set through the OverrideTranslatedText method.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ComponentTranslationContext.ResetBehaviour">
+            <summary>
+            Resets to default behaviour, such that no overriding or ignoring happens.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ComponentTranslationContext.OverrideTranslatedText(System.String)">
+            <summary>
+            Overrides the translation with the specified text.
+            </summary>
+            <param name="translation"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ComponentTranslationContext.IgnoreComponent">
+            <summary>
+            Ignores the component.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Constants.KnownTranslateEndpointNames">
+            <summary>
+            Class representing known endpoint names.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.KnownTranslateEndpointNames.GoogleTranslateV2">
+            <summary>
+            Gets the id used by GoogleTranslate.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.KnownTranslateEndpointNames.GoogleTranslateLegitimate">
+            <summary>
+            Gets the id used by GoogleTranslate legitimate.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Constants.PluginData">
+            <summary>
+            Class providing information about the plugin.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.PluginData.Identifier">
+            <summary>
+            Gets a globally unique identifier.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.PluginData.Name">
+            <summary>
+            Gets a friendly name for the plugin.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.PluginData.Version">
+            <summary>
+            Gets the version of the plugin.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.PluginData.Author">
+            <summary>
+            Gets the author of the plugin.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Constants.UserAgents">
+            <summary>
+            Class defining user agents for various browsers.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.UserAgents.Chrome_Win10_Latest">
+            <summary>
+            Latest Chrome Win10 user-agent as of 2021-01-05.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.UserAgents.Chrome_Win7_Latest">
+            <summary>
+            Latest Chrome Win7 user-agent as of 2020-01-04.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.UserAgents.Firefox_Win10_Latest">
+            <summary>
+            Latest Firefox Win10 user-agent as of 2021-01-05.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.Constants.UserAgents.Edge_Win10_Latest">
+            <summary>
+            Latest Edge Win10 user-agent as of 2021-01-05.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.EndpointInitializationException">
+            <summary>
+            Exception to be thrown when the initialization of an Endpoint fails.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.EndpointInitializationException.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.EndpointInitializationException.#ctor(System.String)">
+            <summary>
+            Constructs an exception with a message.
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.EndpointInitializationException.#ctor(System.String,System.Exception)">
+            <summary>
+            Constructs an exception with a message and inner exception.
+            </summary>
+            <param name="message"></param>
+            <param name="inner"></param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint">
+            <summary>
+            An implementation of ITranslateEndpoint that simplifies implementing
+            the interface based on an external program.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.Id">
+            <summary>
+            Gets the id of the ITranslateEndpoint that is used as a configuration parameter.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.FriendlyName">
+            <summary>
+            Gets a friendly name that can be displayed to the user representing the plugin.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.MaxConcurrency">
+            <summary>
+            Gets the maximum concurrency for the endpoint. This specifies how many times "Translate"
+            can be called before it returns.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.MaxTranslationsPerRequest">
+            <summary>
+            Gets the maximum number of translations that can be served per translation request.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.ExecutablePath">
+            <summary>
+            Gets the path to the executable that should be communicated with.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.Arguments">
+            <summary>
+            Gets the arguments that should be supplied to the executable.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.MinDelay">
+            <summary>
+            Gets the minimum delay to wait before sending a new request.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.MaxDelay">
+            <summary>
+            Gets the maximum delay to wait before sending a new request.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.ConfigurationSectionName">
+            <summary>
+            Gets the name of the configuration section this translator uses, if any.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.ConfigForExternalProcess">
+            <summary>
+            Gets or sets the config the external endpoing will be provided in its Initialize method.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.Initialize(XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext)">
+             <summary>
+             Called during initialization. Use this to initialize plugin or throw exception if impossible.
+            
+             Must set the ExecutablePath and optionally the Arguments property.
+             </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.Update">
+            <summary>
+            Update callback.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.Translate(XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContext)">
+            <summary>
+            Attempt to translated the provided untranslated text. Will be used in a "coroutine",
+            so it can be implemented in an asynchronous fashion.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.Dispose(System.Boolean)">
+            <summary>
+            Disposes the endpoint and kills the external process.
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ExtProtocol.ExtProtocolEndpoint.Dispose">
+            <summary>
+            Disposes the endpoint and kills the external process.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint">
+            <summary>
+            An implementation of ITranslateEndpoint that simplifies implementing
+            the interface based on a web service.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.Id">
+            <summary>
+            Gets the id of the ITranslateEndpoint that is used as a configuration parameter.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.FriendlyName">
+            <summary>
+            Gets a friendly name that can be displayed to the user representing the plugin.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.MaxConcurrency">
+            <summary>
+            Gets the maximum concurrency for the endpoint. This specifies how many times "Translate"
+            can be called before it returns.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.MaxTranslationsPerRequest">
+            <summary>
+            Gets the maximum number of translations that can be served per translation request.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.Initialize(XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext)">
+            <summary>
+            Called during initialization. Use this to initialize plugin or throw exception if impossible.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.OnBeforeTranslate(XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpTranslationContext)">
+            <summary>
+            Callback that can be overwritten that is called before any requests are sent out.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.OnCreateRequest(XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpRequestCreationContext)">
+            <summary>
+            Callback that must be overwritten to create the request object.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.OnInspectResponse(XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpResponseInspectionContext)">
+            <summary>
+            Callback that can be overwritten to inspect the response before extracting the text.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.OnExtractTranslation(XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpTranslationExtractionContext)">
+            <summary>
+            Callback that must overwritten to extract the text from the web response.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.HttpEndpoint.Translate(XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContext)">
+            <summary>
+            Attempt to translated the provided untranslated text. Will be used in a "coroutine",
+            so it can be implemented in an asynchronous fashion.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpRequestCreationContext">
+            <summary>
+            Interface used in the context of creating a new web request object.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpRequestCreationContext.Complete(XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest)">
+            <summary>
+            Completes the callback by specifying the created request to use.
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpResponseInspectionContext">
+            <summary>
+            Interface used in the context of inspecting a web response object.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpResponseInspectionContext.Request">
+            <summary>
+            Gets the web request.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpResponseInspectionContext.Response">
+            <summary>
+            Gets the web response.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpTranslationContext">
+            <summary>
+            Interface used in the context of the HttpEndpoint.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpTranslationExtractionContext">
+            <summary>
+            Interface used in the context of extracting a translated text from a web response.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpTranslationExtractionContext.Complete(System.String)">
+            <summary>
+            Completes the translation by providing the translated text.
+            </summary>
+            <param name="translatedText"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Http.IHttpTranslationExtractionContext.Complete(System.String[])">
+             <summary>
+             Completes the translation by providing the translated texts.
+            
+             The indices of the translations must match the indices of the
+             untranslated texts.
+             </summary>
+             <param name="translatedTexts"></param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext">
+            <summary>
+            Interface used in context of initializing a translator plugin.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext.TranslatorDirectory">
+            <summary>
+            Gets the directory where the translators are placed in.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext.GetOrCreateSetting``1(System.String,System.String,``0)">
+            <summary>
+            Gets or creates the specified setting.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="section"></param>
+            <param name="key"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext.GetOrCreateSetting``1(System.String,System.String)">
+            <summary>
+            Gets or creates the specified setting.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="section"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext.SetSetting``1(System.String,System.String,``0)">
+            <summary>
+            Sets the specified setting.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="section"></param>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext.DisableCertificateChecksFor(System.String[])">
+            <summary>
+            Disables the certificate check for the specified hostnames.
+            </summary>
+            <param name="hosts"></param>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext.SourceLanguage">
+            <summary>
+            Gets the source language that the plugin is configured with.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext.DestinationLanguage">
+            <summary>
+            Gets the destination language that the plugin is configured with.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext.DisableSpamChecks">
+            <summary>
+            Disables the spam checks for this endpoint.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext.SetTranslationDelay(System.Single)">
+            <summary>
+            Sets the translation delay.
+            </summary>
+            <param name="delayInSeconds">The translation delay in seconds. Should not be lower than 0.1 seconds.</param>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.InitializationContext.SourceLanguage">
+            <summary>
+            Gets the source language.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.InitializationContext.DestinationLanguage">
+            <summary>
+            Gets the destination language.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslateEndpoint">
+            <summary>
+            The interface that must be implemented by a translator.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslateEndpoint.Id">
+            <summary>
+            Gets the id of the ITranslateEndpoint that is used as a configuration parameter.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslateEndpoint.FriendlyName">
+            <summary>
+            Gets a friendly name that can be displayed to the user representing the plugin.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslateEndpoint.MaxConcurrency">
+            <summary>
+            Gets the maximum concurrency for the endpoint. This specifies how many times "Translate"
+            can be called before it returns.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslateEndpoint.MaxTranslationsPerRequest">
+            <summary>
+            Gets the maximum number of translations that can be served per translation request.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslateEndpoint.Initialize(XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext)">
+            <summary>
+            Called during initialization. Use this to initialize plugin or throw exception if impossible.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslateEndpoint.Translate(XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContext)">
+            <summary>
+            Attempt to translated the provided untranslated text. Will be used in a "coroutine",
+            so it can be implemented in an asynchronous fashion.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContext">
+            <summary>
+            Interface used in the context of translating a text.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContext.Complete(System.String)">
+            <summary>
+            Completes the translation by providing the translated text.
+            </summary>
+            <param name="translatedText"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContext.Complete(System.String[])">
+             <summary>
+             Completes the translation by providing the translated texts.
+            
+             The indices of the translations must match the indices of the
+             untranslated texts.
+             </summary>
+             <param name="translatedTexts"></param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase">
+            <summary>
+            Interface used in the context of translating a text.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase.UntranslatedText">
+            <summary>
+            Gets the first untranslated text.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase.UntranslatedTexts">
+            <summary>
+            Gets all the untranslated texts. The number of texts
+            in array cannot be greater than the MaxTranslationsPerRequest
+            in the ITranslateEndpoint interface.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase.UntranslatedTextInfo">
+            <summary>
+            Gets the first untranslated text info.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase.UntranslatedTextInfos">
+            <summary>
+            Gets all the untranslated texts. The number of texts
+            in array cannot be greater than the MaxTranslationsPerRequest
+            in the ITranslateEndpoint interface.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase.SourceLanguage">
+            <summary>
+            Gets the source language.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase.DestinationLanguage">
+            <summary>
+            Gets the destination language.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase.Fail(System.String,System.Exception)">
+            <summary>
+            Fails the translation. Immediately throws an exception.
+            </summary>
+            <param name="reason"></param>
+            <param name="exception"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase.Fail(System.String)">
+            <summary>
+            Fails the translation. Immediately throws an exception.
+            </summary>
+            <param name="reason"></param>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContextBase.UserState">
+            <summary>
+            Gets or sets user state that is maintained between various callbacks.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.UntranslatedTextInfo">
+            <summary>
+            Class representing an untranslated text and the contextual information surrounding it.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.UntranslatedTextInfo.ContextBefore">
+            <summary>
+            The contextual untranslated text that preceeds the untranslated text.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.UntranslatedTextInfo.UntranslatedText">
+            <summary>
+            The untranslated text that should be translated.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.UntranslatedTextInfo.ContextAfter">
+            <summary>
+            The contextual untranslated text that comes after the untranslated text.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.UntranslatedTextInfo.ToTransmittable">
+            <summary>
+            Converts the untranslated text to a ext protocol compatible format.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwRequestCreationContext">
+            <summary>
+            Interface used in the context of creating a new web request object.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwRequestCreationContext.Complete(XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwRequestInfo)">
+            <summary>
+            Completes the callback by specifying the created request to use.
+            </summary>
+            <param name="requestInfo"></param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwTranslationContext">
+            <summary>
+            Interface used in the context of the WwwEndpoint.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwTranslationExtractionContext">
+            <summary>
+            Interface used in the context of extracting a translated text from a web response.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwTranslationExtractionContext.ResponseData">
+            <summary>
+            Gets the response data provided by the web response.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwTranslationExtractionContext.Complete(System.String)">
+            <summary>
+            Completes the translation by providing the translated text.
+            </summary>
+            <param name="translatedText"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwTranslationExtractionContext.Complete(System.String[])">
+             <summary>
+             Completes the translation by providing the translated texts.
+            
+             The indices of the translations must match the indices of the
+             untranslated texts.
+             </summary>
+             <param name="translatedTexts"></param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint">
+             <summary>
+             An implementation of ITranslateEndpoint that simplifies implementing
+             the interface based on a web service.
+            
+             Consider using HttpEndpoint instead!
+             </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.Id">
+            <summary>
+            Gets the id of the ITranslateEndpoint that is used as a configuration parameter.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.FriendlyName">
+            <summary>
+            Gets a friendly name that can be displayed to the user representing the plugin.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.MaxConcurrency">
+            <summary>
+            Gets the maximum concurrency for the endpoint. This specifies how many times "Translate"
+            can be called before it returns.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.MaxTranslationsPerRequest">
+            <summary>
+            Gets the maximum number of translations that can be served per translation request.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.OnBeforeTranslate(XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwTranslationContext)">
+            <summary>
+            Callback that can be overwritten that is called before any requests are sent out.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.Initialize(XUnity.AutoTranslator.Plugin.Core.Endpoints.IInitializationContext)">
+            <summary>
+            Called during initialization. Use this to initialize plugin or throw exception if impossible.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.OnCreateRequest(XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwRequestCreationContext)">
+            <summary>
+            Callback that must be overwritten to create the request object.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.OnExtractTranslation(XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.IWwwTranslationExtractionContext)">
+            <summary>
+            Callback that must overwritten to extract the text from the web response.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.CreateWww(System.String,System.Byte[],System.Collections.Generic.Dictionary{System.String,System.String})">
+             <summary>
+             Creates a WWW object used to send a web request.
+            
+             Consider using this instead of default WWW constructor, as that
+             may cause issues with different unity versions.
+             </summary>
+             <param name="address"></param>
+             <param name="data"></param>
+             <param name="headers"></param>
+             <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwEndpoint.Translate(XUnity.AutoTranslator.Plugin.Core.Endpoints.ITranslationContext)">
+            <summary>
+            Attempt to translated the provided untranslated text. Will be used in a "coroutine",
+            so it can be implemented in an asynchronous fashion.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwRequestInfo">
+            <summary>
+            Class representing the info required to setup a web request with WWW.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwRequestInfo.#ctor(System.String)">
+            <summary>
+            Creates a GET web request.
+            </summary>
+            <param name="address"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwRequestInfo.#ctor(System.String,System.String)">
+            <summary>
+            Creates a POST web request.
+            </summary>
+            <param name="address"></param>
+            <param name="data"></param>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwRequestInfo.Address">
+            <summary>
+            Gets the the address.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwRequestInfo.Data">
+            <summary>
+            Gets the data.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Endpoints.Www.WwwRequestInfo.Headers">
+            <summary>
+            Gets or sets the headers of the request.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Extensions.StringBuilderExtensions">
+            <summary>
+            StringBuilder extensions.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Extensions.StringBuilderExtensions.EndsWithWhitespaceOrNewline(System.Text.StringBuilder)">
+            <summary>
+            Gets a bool indicating if the current line ends in whitespace or newline.
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.IMonoBehaviour">
+            <summary>
+            Interface providing the update/start callback of monobehaiour. Intended for IL2CPP usage.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.IMonoBehaviour.Start">
+            <summary>
+            Start callback
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.IMonoBehaviour.OnGUI">
+            <summary>
+            OnGUI callback
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.IMonoBehaviour_Update">
+            <summary>
+            Interface providing the update callback of the MonoBehaviour component.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.IMonoBehaviour_Update.Update">
+            <summary>
+            Update callback
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.InternalTranslationResult">
+            <summary>
+            Represents an ongoing translation request.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.InternalTranslationResult.IsCompleted">
+            <summary>
+            Gets a bool indicating if the translation is completed through
+            either failure or success.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.InternalTranslationResult.TranslatedText">
+            <summary>
+            Gets the translated text if the translation succeeded.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.InternalTranslationResult.ErrorMessage">
+            <summary>
+            Gets the error message if the translation failed.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.InternalTranslationResult.HasError">
+            <summary>
+            Gets a bool indicating if the translation resulted in an error.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.InternalTranslationResult.Current">
+            <summary>
+            Current of IEnumerator interface.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.InternalTranslationResult.MoveNext">
+            <summary>
+            MoveNext of IEnumerator interface.
+            </summary>
+            <returns>Returns true if the translation has not completed.</returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.InternalTranslationResult.Reset">
+            <summary>
+            Reset of IEnumerator interface.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.IPluginEnvironment">
+             <summary>
+             Interface representing the environment in which
+             the plugin runs.
+            
+             This interface is not meant to be used by a translator.
+             </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.IPluginEnvironment.TranslationPath">
+            <summary>
+            Gets or sets the path representing the root of the translations.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.IPluginEnvironment.ConfigPath">
+            <summary>
+            Gets or sets the path representing the config directory.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.IPluginEnvironment.Preferences">
+            <summary>
+            Gets the preferences file.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.IPluginEnvironment.SaveConfig">
+            <summary>
+            Saves the preferences file.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.IPluginEnvironment.AllowDefaultInitializeHarmonyDetourBridge">
+            <summary>
+            Gets a bool indicating whether or not to allow the default value of InitializeHarmonyDetourBridge to be true.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.ITranslator">
+            <summary>
+            Public API Surface for the Auto Translator Plugin.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslator.TranslateAsync(System.String,System.Action{XUnity.AutoTranslator.Plugin.Core.TranslationResult})">
+            <summary>
+            Queries the plugin to provide a translated text for the untranslated text.
+            If the translation cannot be found in the cache, it will make a
+            request to the translator selected by the user.
+            </summary>
+            <param name="untranslatedText">The untranslated text to provide a translation for.</param>
+            <param name="onCompleted">Callback to completion of the translation.</param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslator.TranslateAsync(System.String,System.Int32,System.Action{XUnity.AutoTranslator.Plugin.Core.TranslationResult})">
+            <summary>
+            Queries the plugin to provide a translated text for the untranslated text.
+            If the translation cannot be found in the cache, it will make a
+            request to the translator selected by the user.
+            </summary>
+            <param name="untranslatedText">The untranslated text to provide a translation for.</param>
+            <param name="scope">Scope to be used during translation cache lookup.</param>
+            <param name="onCompleted">Callback to completion of the translation.</param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslator.TryTranslate(System.String,System.String@)">
+            <summary>
+            Queries the plugin to provide a translated text for the untranslated text.
+            If the translation cannot be found in the cache, the method returns false
+            and returns null as the untranslated text.
+            </summary>
+            <param name="untranslatedText">The untranslated text to provide a translation for.</param>
+            <param name="translatedText">The translated text.</param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslator.TryTranslate(System.String,System.Int32,System.String@)">
+            <summary>
+            Queries the plugin to provide a translated text for the untranslated text.
+            If the translation cannot be found in the cache, the method returns false
+            and returns null as the untranslated text.
+            </summary>
+            <param name="untranslatedText">The untranslated text to provide a translation for.</param>
+            <param name="scope">Scope to be used during translation cache lookup.</param>
+            <param name="translatedText">The translated text.</param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslator.IgnoreTextComponent(System.Object)">
+            <summary>
+            Indicates that the specific text component should be ignored until otherwise indicated.
+            </summary>
+            <param name="textComponent"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslator.UnignoreTextComponent(System.Object)">
+            <summary>
+            Indicates that the specific text component should no longer be ignored until otherwise indicated.
+            </summary>
+            <param name="textComponent"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslator.RegisterOnTranslatingCallback(System.Action{XUnity.AutoTranslator.Plugin.Core.ComponentTranslationContext})">
+            <summary>
+            Registers a callback that is called every time the plugin wants to set a translated text on
+            a text component allowing an external plugin to control what should be done.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslator.UnregisterOnTranslatingCallback(System.Action{XUnity.AutoTranslator.Plugin.Core.ComponentTranslationContext})">
+            <summary>
+            Unregisters a previous registered callback.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.KeyValuePairTranslationPackage">
+            <summary>
+            Translation package consisting of key-value pairs of strings.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.KeyValuePairTranslationPackage.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Boolean)">
+            <summary>
+            Constructs the translation package.
+            </summary>
+            <param name="name">The name to be displayed when it is loaded.</param>
+            <param name="entries">The entries to be loaded.</param>
+            <param name="allowMultipleIterations">A bool indicating if the enumerable can be iterated multiple times (due translation reload).</param>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.KeyValuePairTranslationPackage.Name">
+            <summary>
+            Gets the name of the the package.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.PluginLoader">
+             <summary>
+             PluginLoader class used to load the plugin during startup.
+            
+             This is not meant to be used by Translators plugins!
+             </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.PluginLoader.LoadWithConfig(XUnity.AutoTranslator.Plugin.Core.IPluginEnvironment)">
+            <summary>
+            Loads the plugin with the specified environment.
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.PluginLoader.Load">
+            <summary>
+            Loads the plugin with default environment.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.PluginLoader.Load(System.Boolean)">
+            <summary>
+            Loads the plugin with default environment.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.PluginLoader.LoadThroughBootstrapper">
+            <summary>
+            Loads the plugin in a delayed fashion.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Properties.Resources.StaticTranslations">
+             <summary>
+               Looks up a localized string similar to X軸=X
+            Y軸=Y
+            Z軸=Z
+            アイシャドウの種類=Eyeshadow Type
+            アイシャドウの色=Eye Shadow Color
+            アイシャドウの設定=Eye Shadow
+            アイテム=Item
+            アイテムリスト=Item List
+            アイドル=Idol
+            アイドルニーソックス=Idol Kneesocks
+            アイドルに戻す=Default Idol
+            アイドルパンプス=Idol Pumps
+            アイドルワンピ=Idol One-Piece
+            アイドル手袋=Idol Gloves
+            アイドル服=Idol Outfit
+            アイラインの色=Eyeliner Color
+            アイライン上の種類=Upper Eyeliner Type
+            アイライン下の種類=Lower Eyeliner Type
+            アウターの種類=Outerwear Type
+            アウトラインの幅=Outline Thickness
+            アウトラインの濃さ=Outline Density
+            アウトラインの色=Outline Color
+            アウトラインの色を個別に設定する=Enable Outline Color Adjustment
+            アクセサリ= [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Shims.CustomYieldInstructionShim">
+            <summary>
+            Shim for CustomYieldInstruction because it is not supported before version 5.3 of Unity.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Shims.CustomYieldInstructionShim.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Shims.CustomYieldInstructionShim.MoveNext">
+            <summary>
+            Checks if the yield instruction needs to keep waiting.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Shims.CustomYieldInstructionShim.Reset">
+            <summary>
+            Does nothing.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Shims.CustomYieldInstructionShim.Current">
+            <summary>
+            Gets a null object, specifying to Unity that it must
+            wait a single frame before calling MoveNext again.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Shims.CustomYieldInstructionShim.keepWaiting">
+            <summary>
+            Gets a bool indicating if the yield instruction
+            needs to keep waiting.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Shims.CustomYieldInstructionShim.InGameTimeout">
+            <summary>
+            Gets or sets a timeout in in-game seconds.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Shims.CustomYieldInstructionShim.IsTimedOut">
+            <summary>
+            Gets or sets a bool indicating if the CustomYieldOperation timed out.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Shims.CustomYieldInstructionShim.GetSupportedEnumerator">
+            <summary>
+            Gets an enumerator that can be iterated through
+            in a co-routine and will work in even ancient versions
+            of Unity.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache">
+            <summary>
+            This is a simplfied version of the text cache this plugin
+            uses to store translations.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache._translations">
+            <summary>
+            Internal translation dictionary used to store translations.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.#ctor(System.String,System.Boolean)">
+            <summary>
+            Creates a translation cache and loads the translations in the specified file.
+            </summary>
+            <param name="file">This is the file containing the translations to be loaded.</param>
+            <param name="loadTranslationsInFile">This is a bool indicating if the translations in the file specified should be loaded if possible.</param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.#ctor(System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Creates a translation cache and loads the translations in the specified file.
+            </summary>
+            <param name="fileOrDirectory">This is the file containing the translations to be loaded.</param>
+            <param name="loadTranslationsInFile">This is a bool indicating if the translations in the file specified should be loaded if possible.</param>
+            <param name="isDirectory">This is a bool indicating if the first parameter is a directory.</param>
+            <param name="allowTranslationOverride">Indicates whether or not to allow translations read later to override translation read earlier during initialization.</param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.#ctor(System.String,System.Collections.Generic.IEnumerable{System.IO.Stream},System.Boolean,System.Boolean)">
+            <summary>
+            Creates a translation cache, using the specified file as an output file, but without loading the file. This constructor
+            will only read the input streams.
+            </summary>
+            <param name="outputFile">This is the output file.</param>
+            <param name="inputStreams">This is the input streams with translations that will populate the cache.</param>
+            <param name="allowTranslationOverride">Indicates whether or not to allow translations read later to override translation read earlier during initialization.</param>
+            <param name="closeStreams">Indicates if the input streams should be closed after use.</param>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.LoadedFile">
+            <summary>
+            Gets the file that was used to initialize the SimpleTextTranslationCache.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.IsDirectory">
+            <summary>
+            Gets a bool indicating if the LoadedFile is a directory.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.IsEmpty">
+            <summary>
+            Indicates if the translation cache is empty.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.HasTranslated(System.String)">
+            <summary>
+            Checks if the given text has already been translated. Only use in
+            relation to check if new translations should be added to the internal
+            dictionary.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.AddTranslation(System.String,System.String)">
+            <summary>
+            Adds the translations to the internal cache.
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.AddTranslationToCache(System.String,System.String)">
+            <summary>
+            Adds a translation to the cache and writes it to the specified file (with a small delay, on a seperate thread).
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.SimpleTextTranslationCache.TryGetTranslation(System.String,System.Boolean,System.String@)">
+            <summary>
+            Attempts to resolve a translation for the specified string.
+            </summary>
+            <param name="untranslatedText"></param>
+            <param name="allowRegex"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.StreamTranslationPackage">
+            <summary>
+            Translation package for a stream representing the standard text translation format in UTF-8.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.StreamTranslationPackage.#ctor(System.String,System.IO.Stream,System.Boolean)">
+            <summary>
+            Constructs the translation package.
+            </summary>
+            <param name="name">The name to be displayed when it is loaded.</param>
+            <param name="stream">The stream to be loaded. The stream represents a standard text translation file in UTF-8 format.</param>
+            <param name="allowMultipleIterations">A bool indicating if the enumerable can be iterated multiple times (due translation reload).</param>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.StreamTranslationPackage.Name">
+            <summary>
+            Gets the name of the the package.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.StreamTranslationPackage.Dispose">
+            <summary>
+            Disposes the translation package.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Utilities.CoroutineHelper">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.CoroutineHelper.CreateWaitForSeconds(System.Single)">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+            <param name="seconds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.CoroutineHelper.CreateWaitForSecondsRealtime(System.Single)">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+            <param name="delay"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.CoroutineHelper.Start(System.Collections.IEnumerator)">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+            <param name="coroutine"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.CoroutineHelper.Stop(UnityEngine.Coroutine)">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+            <param name="coroutine"></param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Utilities.JsonHelper">
+            <summary>
+            Helper class to work with json, because the json
+            serializers for Unity sucks... badly.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.JsonHelper.Unescape(System.String)">
+            <summary>
+            Unescapes a json string.
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.JsonHelper.Escape(System.String)">
+            <summary>
+            Escapes a json string.
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Utilities.LanguageHelper">
+            <summary>
+            Class containing methods related to the loaded languages.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.LanguageHelper.ContainsVariableSymbols(System.String)">
+            <summary>
+            Checks if the text contains a variable.
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.LanguageHelper.IsRedirected(System.String)">
+            <summary>
+            Check if the text has been redirected through the MakeRedirected method.
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.LanguageHelper.FixRedirected(System.String)">
+            <summary>
+            This is the reverse of the MakeRedirected method. 
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.LanguageHelper.MakeRedirected(System.String)">
+            <summary>
+            Transforms the text in such a way that the plugin can recognize it when
+            it is displayed in a UI component. This is to avoid translating the text.
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Utilities.LanguageHelper.IsTranslatable(System.String)">
+            <summary>
+            Gets a bool indicating if the given string is translatable based on whether or not it
+            contains symbols of the source language.
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Utilities.RomanizationHelper">
+            <summary>
+            Helpers that ensures strings only contains standard ASCII characters.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.TextTranslationCache._staticTranslations">
+            <summary>
+            All the translations are stored in this dictionary.
+            </summary>
+        </member>
+        <member name="F:XUnity.AutoTranslator.Plugin.Core.TextTranslationCache._writeToFileSync">
+            <summary>
+            These are the new translations that has not yet been persisted to the file system.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.UnityEngineTime">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.UnityEngineTime.realtimeSinceStartup">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.UnityEngineTime.frameCount">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.TimeSupport">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.TimeSupport.Time">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.ITime">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.ITime.realtimeSinceStartup">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.ITime.frameCount">
+            <summary>
+            WARNING: Pubternal API (internal). Do not use. May change during any update.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.TranslationHelper">
+            <summary>
+            Class used to map redirected resource translations to a source file.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.TranslationHelper.RegisterRedirectedResourceTextToPath(System.String,System.String)">
+            <summary>
+            Register the text as originating from the specified path.
+            </summary>
+            <param name="text"></param>
+            <param name="virtualFilePath"></param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.TranslationRegistry">
+             <summary>
+             Entry point for manipulating translations that have been loaded by the plugin.
+            
+             Methods on this interface should be called during plugin initialization. Preferably during the Start callback.
+             </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.TranslationRegistry.Default">
+            <summary>
+            Obtains the translations registry instance.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.ITranslationRegistry">
+            <summary>
+            Interface for manipulating translation that have been loaded by the plugin.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslationRegistry.RegisterPluginSpecificTranslations(System.Reflection.Assembly,XUnity.AutoTranslator.Plugin.Core.StreamTranslationPackage)">
+            <summary>
+            Registers and loads the specified translation package.
+            </summary>
+            <param name="assembly">The assembly that the behaviour should be applied to.</param>
+            <param name="package">Package containing translations.</param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslationRegistry.RegisterPluginSpecificTranslations(System.Reflection.Assembly,XUnity.AutoTranslator.Plugin.Core.KeyValuePairTranslationPackage)">
+            <summary>
+            Registers and loads the specified translation package.
+            </summary>
+            <param name="assembly">The assembly that the behaviour should be applied to.</param>
+            <param name="package">Package containing translations.</param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.ITranslationRegistry.EnablePluginTranslationFallback(System.Reflection.Assembly)">
+            <summary>
+            Allow plugin-specific translation to fallback to generic translations.
+            </summary>
+            <param name="assembly">The assembly that the behaviour should be applied to.</param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.TranslationRegistryExtensions">
+            <summary>
+            Extension methods for the ITranslationRegistry interface.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.TranslationRegistryExtensions.RegisterPluginSpecificTranslations(XUnity.AutoTranslator.Plugin.Core.ITranslationRegistry,XUnity.AutoTranslator.Plugin.Core.StreamTranslationPackage)">
+            <summary>
+            Registers and loads the specified translation package. Inspects the callstack to determine
+            the calling plugin that the translations should be associated with.
+            </summary>
+            <param name="registry">The translation registry that the package is being registered with.</param>
+            <param name="package">Package containing translations.</param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.TranslationRegistryExtensions.RegisterPluginSpecificTranslations(XUnity.AutoTranslator.Plugin.Core.ITranslationRegistry,XUnity.AutoTranslator.Plugin.Core.KeyValuePairTranslationPackage)">
+            <summary>
+            Registers and loads the specified translation package. Inspects the callstack to determine
+            the calling plugin that the translations should be associated with.
+            </summary>
+            <param name="registry">The translation registry that the package is being registered with.</param>
+            <param name="package">Package containing translations.</param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.TranslationRegistryExtensions.EnablePluginTranslationFallback(XUnity.AutoTranslator.Plugin.Core.ITranslationRegistry)">
+            <summary>
+            Allow plugin-specific translation to fallback to generic translations. Inspects the callstack to determine
+            the calling plugin that the translations should be associated with.
+            </summary>
+            <param name="registry">The translation registry that the package is being registered with.</param>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.TranslationResult">
+            <summary>
+            Class representing the result of a translation.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.TranslationResult.Succeeded">
+            <summary>
+            Gets a bool indicating if the translation succeeded.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.TranslationResult.TranslatedText">
+            <summary>
+            Gets the translated text.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.TranslationResult.ErrorMessage">
+            <summary>
+            Gets the error message if the translation did not succeed.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebClient">
+            <summary>
+            Web client that can be used to send web requests in a unity compatible way.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebClient.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebClient.GetWebRequest(System.Uri)">
+            <summary>
+            
+            </summary>
+            <param name="address"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebClient.GetWebResponse(System.Net.WebRequest,System.IAsyncResult)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebClient.GetWebResponse(System.Net.WebRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebClient.Send(XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest)">
+            <summary>
+            Sends a web request and received a response object that can be yielded.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest">
+            <summary>
+            Class that represents a web request.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Constructs a web request.
+            </summary>
+            <param name="method"></param>
+            <param name="address"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a web request.
+            </summary>
+            <param name="method"></param>
+            <param name="address"></param>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest.#ctor(System.String)">
+            <summary>
+            Constructs a GET web request.
+            </summary>
+            <param name="address"></param>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest.Method">
+            <summary>
+            Gets the HTTP method.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest.Address">
+            <summary>
+            Gets the address that the request is issued against.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest.Data">
+            <summary>
+            Gets the request data that is sent to the web service.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest.Cookies">
+            <summary>
+            Gets or sets the CookieContainer to manage cookies.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebRequest.Headers">
+            <summary>
+            Gets or sets the request headers.
+            </summary>
+        </member>
+        <member name="T:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebResponse">
+            <summary>
+            Class represent a web response.
+            </summary>
+        </member>
+        <member name="M:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebResponse.#ctor">
+            <summary>
+            Default construcutor.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebResponse.Code">
+            <summary>
+            Gets the returned HTTP status code.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebResponse.Data">
+            <summary>
+            Gets the returned data.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebResponse.Headers">
+            <summary>
+            Gets the returned response headers.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebResponse.NewCookies">
+            <summary>
+            Gets the new cookies returned from the response by the
+            Set-Cookie header.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebResponse.Error">
+            <summary>
+            Gets the error, if an error occurred.
+            </summary>
+        </member>
+        <member name="P:XUnity.AutoTranslator.Plugin.Core.Web.XUnityWebResponse.keepWaiting">
+            <summary>
+            Gets a bool indicating if Unity should keep waiting for the response to complete.
+            </summary>
+        </member>
+    </members>
+</doc>

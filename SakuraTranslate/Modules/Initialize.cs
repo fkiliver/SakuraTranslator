@@ -107,6 +107,15 @@ namespace SakuraTranslate
                 XuaLogger.AutoTranslator.Info($"Initialize: Setting ServicePointManager.DefaultConnectionLimit to {_maxConcurrency}");
                 ServicePointManager.DefaultConnectionLimit = _maxConcurrency;
             }
+            if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "EnableFastTranslate", "False"), out _enableFastTranslate)) { _enableFastTranslate = false; }
+            if (_enableFastTranslate)
+            {
+                context.SetTranslationDelay(0.1f);
+                XuaLogger.AutoTranslator.Warn("Initialize: Setting translation delay to 0.1s");
+                context.DisableSpamChecks();
+                XuaLogger.AutoTranslator.Warn("Initialize: Spam checks are disabled");
+                XuaLogger.AutoTranslator.Warn("Initialize: Fast translate is enabled");
+            }
             if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "Debug", "False"), out _debug)) { _debug = false; }
         }
     }
