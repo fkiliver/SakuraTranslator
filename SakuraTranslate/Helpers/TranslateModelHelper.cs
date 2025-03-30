@@ -20,7 +20,8 @@ namespace SakuraTranslate.Helpers
                     switch (modelVersion)
                     {
                         case "2.6": return TranslationModel.GalTranslV2_6;
-                        default: return TranslationModel.GalTranslV2_6;
+                        case "3": return TranslationModel.GalTranslV3;
+                        default: return TranslationModel.GalTranslV3;
                     }
                 default:
                     return TranslationModel.SakuraV1_0;

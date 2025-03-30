@@ -2,11 +2,40 @@
 
   <PropertyGroup>
     <TargetFramework>net3.5</TargetFramework>
-    <Version>0.3.7</Version>
+	<TargetFramework Condition="'$(Configuration)'=='IL2CPPRelease'">net6.0</TargetFramework>
+    <Version>0.3.8</Version>
+    <Configurations>Release;IL2CPPRelease</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='IL2CPPRelease|AnyCPU'">
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="XUnity.AutoTranslator.Plugin.Core" Version="4.7.0" />
+    <Reference Include="XUnity.AutoTranslator.Plugin.Core" Condition="'$(Configuration)'=='Release'">
+      <HintPath>..\Libraries\XUnity.AutoTranslator-Developer-5.4.4\XUnity.AutoTranslator.Plugin.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.AutoTranslator.Plugin.ExtProtocol" Condition="'$(Configuration)'=='Release'">
+      <HintPath>..\Libraries\XUnity.AutoTranslator-Developer-5.4.4\XUnity.AutoTranslator.Plugin.ExtProtocol.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.Common" Condition="'$(Configuration)'=='Release'">
+      <HintPath>..\Libraries\XUnity.AutoTranslator-Developer-5.4.4\XUnity.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.ResourceRedirector" Condition="'$(Configuration)'=='Release'">
+      <HintPath>..\Libraries\XUnity.AutoTranslator-Developer-5.4.4\XUnity.ResourceRedirector.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.AutoTranslator.Plugin.Core" Condition="'$(Configuration)'=='IL2CPPRelease'">
+      <HintPath>..\Libraries\XUnity.AutoTranslator-Developer-IL2CPP-5.4.4\XUnity.AutoTranslator.Plugin.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.AutoTranslator.Plugin.ExtProtocol" Condition="'$(Configuration)'=='IL2CPPRelease'">
+      <HintPath>..\Libraries\XUnity.AutoTranslator-Developer-IL2CPP-5.4.4\XUnity.AutoTranslator.Plugin.ExtProtocol.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.Common" Condition="'$(Configuration)'=='IL2CPPRelease'">
+      <HintPath>..\Libraries\XUnity.AutoTranslator-Developer-IL2CPP-5.4.4\XUnity.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="XUnity.ResourceRedirector" Condition="'$(Configuration)'=='IL2CPPRelease'">
+      <HintPath>..\Libraries\XUnity.AutoTranslator-Developer-IL2CPP-5.4.4\XUnity.ResourceRedirector.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
