@@ -68,7 +68,8 @@ DictMode=MatchOriginalText
 Dict={"想太":["想太","男主人公"],"ダイヤ":["戴亚","女"]}
 FixDegeneration=True
 MaxConcurrency=1
-EnableFastTranslate=False
+EnableShortDelay=True
+DisableSpamChecks=False
 Debug=False
 ```
 
