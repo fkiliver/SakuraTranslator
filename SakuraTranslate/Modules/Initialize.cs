@@ -25,7 +25,7 @@ namespace SakuraTranslate
             }
             catch (Exception ex)
             {
-                XuaLogger.AutoTranslator.Warn(ex, $"Initialize: Failed to parse max tokens mode: {context.GetOrCreateSetting<string>("Sakura", "MaxTokensMode", "Static")}, falling back to Static");
+                XuaLogger.AutoTranslator.Warn(ex, $"SakuraTranslate.Initialize: Failed to parse max tokens mode: {context.GetOrCreateSetting<string>("Sakura", "MaxTokensMode", "Static")}, falling back to Static");
                 _maxTokensMode = MaxTokensMode.Static;
             }
             if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "StaticMaxTokens", "512"), out _staticMaxTokens)) { _staticMaxTokens = 512; }
@@ -39,13 +39,13 @@ namespace SakuraTranslate
             }
             catch (Exception ex)
             {
-                XuaLogger.AutoTranslator.Warn(ex, $"Initialize: Failed to parse dict mode: {context.GetOrCreateSetting<string>("Sakura", "DictMode", "None")}, falling back to None");
+                XuaLogger.AutoTranslator.Warn(ex, $"SakuraTranslate.Initialize: Failed to parse dict mode: {context.GetOrCreateSetting<string>("Sakura", "DictMode", "None")}, falling back to None");
                 _dictMode = DictMode.None;
             }
             var dictStr = context.GetOrCreateSetting<string>("Sakura", "Dict", string.Empty);
             if (string.IsNullOrEmpty(dictStr))
             {
-                XuaLogger.AutoTranslator.Warn("Initialize: Dict is empty, setting DictMode to None");
+                XuaLogger.AutoTranslator.Warn("SakuraTranslate.Initialize: Dict is empty, setting DictMode to None");
                 _dictMode = DictMode.None;
                 _fullDictStr = string.Empty;
             }
@@ -94,7 +94,7 @@ namespace SakuraTranslate
                 }
                 catch (Exception ex)
                 {
-                    XuaLogger.AutoTranslator.Warn(ex, $"Initialize: Failed to parse dict string: {dictStr}");
+                    XuaLogger.AutoTranslator.Warn(ex, $"SakuraTranslate.Initialize: Failed to parse dict string: {dictStr}");
                     _dictMode = DictMode.None;
                     _fullDictStr = string.Empty;
                 }
@@ -104,17 +104,20 @@ namespace SakuraTranslate
             if (!int.TryParse(context.GetOrCreateSetting<string>("Sakura", "MaxConcurrency", "1"), out _maxConcurrency)) { _maxConcurrency = 1; }
             if (_maxConcurrency > ServicePointManager.DefaultConnectionLimit)
             {
-                XuaLogger.AutoTranslator.Info($"Initialize: Setting ServicePointManager.DefaultConnectionLimit to {_maxConcurrency}");
+                XuaLogger.AutoTranslator.Info($"SakuraTranslate.Initialize: Setting ServicePointManager.DefaultConnectionLimit to {_maxConcurrency}");
                 ServicePointManager.DefaultConnectionLimit = _maxConcurrency;
             }
-            if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "EnableFastTranslate", "False"), out _enableFastTranslate)) { _enableFastTranslate = false; }
-            if (_enableFastTranslate)
+            if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "EnableShortDelay", "False"), out _enableShortDelay)) { _enableShortDelay = false; }
+            if (_enableShortDelay)
             {
+                XuaLogger.AutoTranslator.Warn("SakuraTranslate.Initialize: Setting translation delay to 0.1s");
                 context.SetTranslationDelay(0.1f);
-                XuaLogger.AutoTranslator.Warn("Initialize: Setting translation delay to 0.1s");
+            }
+            if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "DisableSpamChecks", "False"), out _disableSpamChecks)) { _disableSpamChecks = false; }
+            if (_disableSpamChecks)
+            {
+                XuaLogger.AutoTranslator.Warn("SakuraTranslate.Initialize: Spam checks are disabled");
                 context.DisableSpamChecks();
-                XuaLogger.AutoTranslator.Warn("Initialize: Spam checks are disabled");
-                XuaLogger.AutoTranslator.Warn("Initialize: Fast translate is enabled");
             }
             if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "Debug", "False"), out _debug)) { _debug = false; }
         }

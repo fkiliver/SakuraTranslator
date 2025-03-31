@@ -17,7 +17,7 @@ namespace SakuraTranslate
             // 抽取未翻译文本
             var untranslatedText = context.UntranslatedText;
 
-            if (_debug) { XuaLogger.AutoTranslator.Debug($"Translate: untranslatedText: {untranslatedText}"); }
+            if (_debug) { XuaLogger.AutoTranslator.Debug($"SakuraTranslate.Translate: untranslatedText: {untranslatedText}"); }
 
             double frequencyPenalty = 0;
             int retryCount = 0;
@@ -58,7 +58,7 @@ namespace SakuraTranslate
                     }
                 }
 
-                if (_debug) { XuaLogger.AutoTranslator.Debug($"Translate: responseText: {responseText}"); }
+                if (_debug) { XuaLogger.AutoTranslator.Debug($"SakuraTranslate.Translate: responseText: {responseText}"); }
 
                 var jsonResponse = JSON.Parse(responseText);
                 int completionTokens = int.Parse(jsonResponse["usage"]["completion_tokens"]);
@@ -66,14 +66,15 @@ namespace SakuraTranslate
 
                 if (translatedText == null)
                 {
-                    XuaLogger.AutoTranslator.Error($"Translate: Failed to parse response, jsonResponse: {jsonResponse}");
+                    XuaLogger.AutoTranslator.Error($"SakuraTranslate.Translate: Failed to parse response, jsonResponse: {jsonResponse}");
+                    throw new System.Exception($"Failed to parse response, jsonResponse: {jsonResponse}");
                 }
 
                 if (_fixDegeneration && completionTokens == GetMaxTokens(untranslatedText))
                 {
                     if (retryCount < DEGENERATION_MAX_RETRIES)
                     {
-                        XuaLogger.AutoTranslator.Warn($"Translate: Detected degeneration, retry: {retryCount + 1}/{DEGENERATION_MAX_RETRIES}, " +
+                        XuaLogger.AutoTranslator.Warn($"SakuraTranslate.Translate: Detected degeneration, retry: {retryCount + 1}/{DEGENERATION_MAX_RETRIES}, " +
                             $"completionTokens: {completionTokens}, maxTokens: {GetMaxTokens(untranslatedText)}, untranslatedText: {untranslatedText}");
                         frequencyPenalty += 0.2;
                         retryCount++;
@@ -81,7 +82,7 @@ namespace SakuraTranslate
                     }
                     else
                     {
-                        XuaLogger.AutoTranslator.Warn($"Translate: Failed to fix degeneration after {retryCount} retries, untranslatedText: {untranslatedText}");
+                        XuaLogger.AutoTranslator.Warn($"SakuraTranslate.Translate: Failed to fix degeneration after {retryCount} retries, untranslatedText: {untranslatedText}");
                         break;
                     }
                 }
@@ -91,7 +92,7 @@ namespace SakuraTranslate
             translatedText = JsonHelper.Unescape(translatedText);
             translatedText = TranslationHelper.FixTranslationEnd(untranslatedText, translatedText);
 
-            if (_debug) { XuaLogger.AutoTranslator.Debug($"Translate: translatedText: {translatedText}"); }
+            if (_debug) { XuaLogger.AutoTranslator.Debug($"SakuraTranslate.Translate: translatedText: {translatedText}"); }
 
             // 提交翻译文本
             context.Complete(translatedText);

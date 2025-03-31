@@ -27,7 +27,7 @@ namespace SakuraTranslate
                 $"\"num_beams\":1," +
                 $"\"repetition_penalty\":1.0," +
                 $"\"stream\":false}}";
-            if (_debug) { XuaLogger.AutoTranslator.Debug($"MakeRequestStr: retStr={{{retStr}}}"); }
+            if (_debug) { XuaLogger.AutoTranslator.Debug($"SakuraTranslate.MakeRequestStr: retStr={retStr}"); }
             return retStr;
         }
 

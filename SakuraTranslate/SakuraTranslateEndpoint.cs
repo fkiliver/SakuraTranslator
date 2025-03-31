@@ -21,7 +21,8 @@ namespace SakuraTranslate
         private Dictionary<string, List<string>> _dict;
         private bool _fixDegeneration;
         private int _maxConcurrency;
-        private bool _enableFastTranslate;
+        private bool _enableShortDelay;
+        private bool _disableSpamChecks;
         private bool _debug;
 
         // local var
