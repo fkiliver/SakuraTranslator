@@ -51,7 +51,9 @@ FromLanguage=ja
 OverrideFont= ##填写你系统中已安装的字体名
 OverrideFontTextMeshPro=arialuni_sdf_u2018 ##或arialuni_sdf_u2019
 ```
-其中arialuni_sdf_u201x可以从[字体文件](https://github.com/bbepis/XUnity.AutoTranslator/releases/download/v5.4.5/TMP_Font_AssetBundles.zip)获取，请解压后直接放置在游戏根目录
+其中arialuni_sdf_u201x可以从[字体文件](https://github.com/bbepis/XUnity.AutoTranslator/releases/download/v5.4.5/TMP_Font_AssetBundles.zip)获取，请解压后直接放置在游戏根目录  
+部分游戏`OverrideFontTextMeshPro`可能无效，可以尝试使用`FallbackFontTextMeshPro`  
+此外，若出现不翻译、翻译缺失格式等问题，可尝试修改`MaxCharactersPerTranslation`和`IgnoreWhitespaceInDialogue`选项
 
 ### 完整配置示例
 ```
