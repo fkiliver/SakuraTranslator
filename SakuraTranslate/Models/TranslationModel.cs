@@ -6,6 +6,7 @@
         SakuraV0_10,
         SakuraV1_0,
         GalTranslV2_6,
-        GalTranslV3
+        GalTranslV3,
+        GalTransl14bV3
     }
 }

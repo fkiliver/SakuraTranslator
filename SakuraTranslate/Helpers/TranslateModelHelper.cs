@@ -23,6 +23,12 @@ namespace SakuraTranslate.Helpers
                         case "3": return TranslationModel.GalTranslV3;
                         default: return TranslationModel.GalTranslV3;
                     }
+                case "galtransl14b":
+                    switch (modelVersion)
+                    {
+                        case "3": return TranslationModel.GalTransl14bV3;
+                        default: return TranslationModel.GalTransl14bV3;
+                    }
                 default:
                     return TranslationModel.SakuraV1_0;
             }

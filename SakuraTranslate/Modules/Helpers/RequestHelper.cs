@@ -61,6 +61,8 @@ namespace SakuraTranslate
                     return MakeGalTranslPromptV2_6(line, frequencyPenalty);
                 case TranslationModel.GalTranslV3:
                     return MakeGalTranslPromptV3(line, frequencyPenalty);
+                case TranslationModel.GalTransl14bV3:
+                    return MakeGalTransl14bPromptV3(line, frequencyPenalty);
                 default:
                     throw new Exception("Invalid model type.");
             }
