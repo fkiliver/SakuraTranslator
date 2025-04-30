@@ -6,7 +6,7 @@
 
 # 介绍
 这是一个基于XUnity.AutoTranslator和Sakura模型的Unity游戏本地翻译器，能够提供高质量离线日文翻译  
-建议使用[GalTransl-V3翻译模型](https://huggingface.co/SakuraLLM/Sakura-GalTransl-7B-v3)，当前支持版本为Sakura v0.9/v0.10/v1.0，GalTransl v2.6/v3
+建议使用[GalTransl-V3翻译模型](https://huggingface.co/SakuraLLM/Sakura-GalTransl-7B-v3)，当前支持版本为Sakura v0.9/v0.10/v1.0，GalTransl 7B v2.6/v3，GalTransl 14B v3
 
 ## TODO
 - [ ] 添加历史上文（搁置，难以将对话文本与ui文本区分，需要更好的规则）
@@ -25,7 +25,7 @@
 
 ## 修改配置文件
 ### 安装SakuraTranslator
-从[Releases](https://github.com/fkiliver/SakuraTranslator/releases) 下载`SakuraTranslate.dll`放置在Translators文件夹内
+从 [Releases](https://github.com/fkiliver/SakuraTranslator/releases) 下载`SakuraTranslate.dll`放置在Translators文件夹内
  - 如果你使用ReiPatcher，你应该放在`{游戏目录}\{游戏名}_Data\Managed\Translators`
  - 如果你使用BepInEx，你应该放在`{游戏目录}\BepInEx\plugins\XUnity.AutoTranslator\Translators`
 
@@ -76,16 +76,18 @@ Debug=False
 ### 支持的模型及对应关系
 对应参数为`ModelName`和`ModelVersion`，对应关系如下表，其中`*`表示没有匹配时的默认值
 
-| ModelName  | ModelVersion | TranslationModel       |
-|------------|--------------|------------------------|
-| Sakura     | 0.9          | Sakura 0.9             |
-| Sakura     | 0.10         | Sakura 0.10            |
-| Sakura     | 1.0          | Sakura 1.0             |
-| Sakura     | *            | Sakura 1.0 (默认)      |
-| GalTransl  | 2.6          | GalTransl 2.6          |
-| GalTransl  | 3            | GalTransl 3            |
-| GalTransl  | *            | GalTransl 3 (默认)     |
-| *          | *            | Sakura 1.0 (默认)      |
+| ModelName    | ModelVersion | TranslationModel        |
+|--------------|--------------|-------------------------|
+| Sakura       | 0.9          | Sakura v0.9             |
+| Sakura       | 0.10         | Sakura v0.10            |
+| Sakura       | 1.0          | Sakura v1.0             |
+| Sakura       | *            | Sakura v1.0 (默认)      |
+| GalTransl    | 2.6          | GalTransl 7B v2.6       |
+| GalTransl    | 3            | GalTransl 7B v3         |
+| GalTransl    | *            | GalTransl 7B v3 (默认)  |
+| GalTransl14B | 3            | GalTransl 14B v3        |
+| GalTransl14B | *            | GalTransl 14B v3 (默认) |
+| *            | *            | Sakura v1.0 (默认)      |
 
 模型默认值为Sakura 1.0  
 需要将`Endpoint`设置为chat completions api（例：`http://127.0.0.1:8080/v1/chat/completions`）  
