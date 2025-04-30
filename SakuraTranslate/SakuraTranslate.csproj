@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net3.5</TargetFramework>
 	<TargetFramework Condition="'$(Configuration)'=='IL2CPPRelease'">net6.0</TargetFramework>
-    <Version>0.3.8</Version>
+    <Version>0.3.9</Version>
     <Configurations>Release;IL2CPPRelease</Configurations>
   </PropertyGroup>
 
