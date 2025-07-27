@@ -6,7 +6,7 @@
 
 # 介绍
 这是一个基于XUnity.AutoTranslator和Sakura模型的Unity游戏本地翻译器，能够提供高质量离线日文翻译  
-建议使用[GalTransl-V3翻译模型](https://huggingface.co/SakuraLLM/Sakura-GalTransl-7B-v3)，当前支持版本为Sakura v0.9/v0.10/v1.0，GalTransl 7B v2.6/v3，GalTransl 14B v3
+建议使用[GalTransl-V3翻译模型](https://huggingface.co/SakuraLLM/Sakura-GalTransl-7B-v3)，当前支持版本为Sakura v0.9/v0.10/v1.0，GalTransl v2.6/v3
 
 ## TODO
 - [ ] 添加历史上文（搁置，难以将对话文本与ui文本区分，需要更好的规则）
@@ -70,6 +70,8 @@ FixDegeneration=True
 MaxConcurrency=1
 EnableShortDelay=True
 DisableSpamChecks=False
+TemperatureOverride=
+TopPOverride=
 Debug=False
 ```
 
@@ -82,11 +84,9 @@ Debug=False
 | Sakura       | 0.10         | Sakura v0.10            |
 | Sakura       | 1.0          | Sakura v1.0             |
 | Sakura       | *            | Sakura v1.0 (默认)      |
-| GalTransl    | 2.6          | GalTransl 7B v2.6       |
-| GalTransl    | 3            | GalTransl 7B v3         |
-| GalTransl    | *            | GalTransl 7B v3 (默认)  |
-| GalTransl14B | 3            | GalTransl 14B v3        |
-| GalTransl14B | *            | GalTransl 14B v3 (默认) |
+| GalTransl    | 2.6          | GalTransl v2.6          |
+| GalTransl    | 3            | GalTransl v3            |
+| GalTransl    | *            | GalTransl v3 (默认)     |
 | *            | *            | Sakura v1.0 (默认)      |
 
 模型默认值为Sakura 1.0  
@@ -127,6 +127,17 @@ Debug=False
 - `DisableSpamChecks`
   - `False`（默认）：开启AutoTranslator的Spam检测
   - `True`：关闭Spam检测
+
+### Temperature和TopP覆盖设置
+- `TemperatureOverride`：覆盖模型默认的temperature值（可选，留空使用模型默认值）
+  - 不同模型的默认temperature值：
+	- Sakura系列：0.1
+	- GalTransl v2.6：0.2
+	- GalTransl v3：0.3
+- `TopPOverride`：覆盖模型默认的top_p值（可选，留空使用模型默认值）
+  - 不同模型的默认top_p值：
+	- Sakura系列：0.3
+	- GalTransl系列：0.8
 
 ## 启动游戏
 完成所有配置后，请删除第一次启动时产生的翻译文件
