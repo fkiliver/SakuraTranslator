@@ -23,6 +23,10 @@ namespace SakuraTranslate
         private int _maxConcurrency;
         private bool _enableShortDelay;
         private bool _disableSpamChecks;
+        private bool _enableTemperatureOverride;
+        private double _temperatureOverride;
+        private bool _enableTopPOverride;
+        private double _topPOverride;
         private bool _debug;
 
         // local var

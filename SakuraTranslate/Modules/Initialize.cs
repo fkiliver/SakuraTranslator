@@ -119,6 +119,45 @@ namespace SakuraTranslate
                 XuaLogger.AutoTranslator.Warn("SakuraTranslate.Initialize: Spam checks are disabled");
                 context.DisableSpamChecks();
             }
+            // temperature and top_p override settings
+            var temperatureOverrideStr = context.GetOrCreateSetting<string>("Sakura", "TemperatureOverride", string.Empty);
+            if (!string.IsNullOrEmpty(temperatureOverrideStr))
+            {
+                if (double.TryParse(temperatureOverrideStr, out double tempOverride))
+                {
+                    _enableTemperatureOverride = true;
+                    _temperatureOverride = tempOverride;
+                    XuaLogger.AutoTranslator.Info($"SakuraTranslate.Initialize: TemperatureOverride set to {_temperatureOverride}");
+                }
+                else
+                {
+                    _enableTemperatureOverride = false;
+                    XuaLogger.AutoTranslator.Warn($"SakuraTranslate.Initialize: Failed to parse TemperatureOverride: {temperatureOverrideStr}");
+                }
+            }
+            else
+            {
+                _enableTemperatureOverride = false;
+            }
+            var topPOverrideStr = context.GetOrCreateSetting<string>("Sakura", "TopPOverride", string.Empty);
+            if (!string.IsNullOrEmpty(topPOverrideStr))
+            {
+                if (double.TryParse(topPOverrideStr, out double topPOverride))
+                {
+                    _enableTopPOverride = true;
+                    _topPOverride = topPOverride;
+                    XuaLogger.AutoTranslator.Info($"SakuraTranslate.Initialize: TopPOverride set to {_topPOverride}");
+                }
+                else
+                {
+                    _enableTopPOverride = false;
+                    XuaLogger.AutoTranslator.Warn($"SakuraTranslate.Initialize: Failed to parse TopPOverride: {topPOverrideStr}");
+                }
+            }
+            else
+            {
+                _enableTopPOverride = false;
+            }
             if (!bool.TryParse(context.GetOrCreateSetting<string>("Sakura", "Debug", "False"), out _debug)) { _debug = false; }
         }
     }

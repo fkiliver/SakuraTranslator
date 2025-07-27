@@ -12,14 +12,17 @@ namespace SakuraTranslate
     {
         private string MakeRequestStr(List<PromptMessage> prompts, int maxTokens, double temperature, double topP, double frequencyPenalty = 0)
         {
+            double actualTemperature = _enableTemperatureOverride ? _temperatureOverride : temperature;
+            double actualTopP = _enableTopPOverride ? _topPOverride : topP;
+            
             var sb = new StringBuilder();
             prompts.ForEach(p => { sb.Append($"{{\"role\":\"{JsonHelper.Escape(p.Role)}\",\"content\":\"{JsonHelper.Escape(p.Content)}\"}},"); });
             sb.Remove(sb.Length - 1, 1);
             var retStr =
                 $"{{\"model\":\"sukinishiro\"," +
                 $"\"messages\":[{sb}]," +
-                $"\"temperature\":{temperature}," +
-                $"\"top_p\":{topP}," +
+                $"\"temperature\":{actualTemperature}," +
+                $"\"top_p\":{actualTopP}," +
                 $"\"max_tokens\":{maxTokens}," +
                 $"\"frequency_penalty\":{frequencyPenalty}," +
                 $"\"seed\":-1," +
