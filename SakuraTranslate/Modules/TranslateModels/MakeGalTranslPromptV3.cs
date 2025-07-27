@@ -22,7 +22,7 @@ namespace SakuraTranslate
                     Content = $"参考以下术语表（可为空，格式为src->dst #备注）：{(string.IsNullOrEmpty(dictStr) ? string.Empty : "\n" + dictStr)}\n\n" +
                               $"根据以上术语表的对应关系和备注，结合历史剧情和上下文，将下面的文本从日文翻译成简体中文：{originalText}"
                 }
-            }, GetMaxTokens(originalText), 0.6, 0.8, frequencyPenalty);
+            }, GetMaxTokens(originalText), 0.3, 0.8, frequencyPenalty);
         }
     }
 }
